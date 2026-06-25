@@ -40,9 +40,14 @@ func TestServerBootHealthz(t *testing.T) {
 func TestServerBootReadyz(t *testing.T) {
 	pool, err := postgres.NewPool(context.Background(), testDSN())
 	if err != nil {
-		t.Skipf("skipping: cannot connect to test PostgreSQL: %v", err)
+		t.Skipf("skipping: cannot create pool: %v", err)
 	}
 	defer pool.Close()
+
+	// Verify PostgreSQL is actually reachable
+	if err := pool.Ping(context.Background()); err != nil {
+		t.Skipf("skipping: cannot ping PostgreSQL: %v", err)
+	}
 
 	e := echosrv.New()
 	h := &handler.HealthHandler{
@@ -70,9 +75,14 @@ func TestServerBootReadyz(t *testing.T) {
 func TestServerBootReadyzDown(t *testing.T) {
 	pool, err := postgres.NewPool(context.Background(), testDSN())
 	if err != nil {
-		t.Skipf("skipping: cannot connect to test PostgreSQL: %v", err)
+		t.Skipf("skipping: cannot create pool: %v", err)
 	}
 	defer pool.Close()
+
+	// Verify PostgreSQL is actually reachable
+	if err := pool.Ping(context.Background()); err != nil {
+		t.Skipf("skipping: cannot ping PostgreSQL: %v", err)
+	}
 
 	e := echosrv.New()
 	h := &handler.HealthHandler{
@@ -100,9 +110,14 @@ func TestServerBootReadyzDown(t *testing.T) {
 func TestGracefulShutdown(t *testing.T) {
 	pool, err := postgres.NewPool(context.Background(), testDSN())
 	if err != nil {
-		t.Skipf("skipping: cannot connect to test PostgreSQL: %v", err)
+		t.Skipf("skipping: cannot create pool: %v", err)
 	}
 	defer pool.Close()
+
+	// Verify PostgreSQL is actually reachable
+	if err := pool.Ping(context.Background()); err != nil {
+		t.Skipf("skipping: cannot ping PostgreSQL: %v", err)
+	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
