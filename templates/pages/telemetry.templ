@@ -1,0 +1,107 @@
+package pages
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/pablojhp.omnigo/templates/layout"
+)
+
+// SessionInfo holds per-session display data for the telemetry page.
+type SessionInfo struct {
+	JID            string
+	Status         string
+	ConnectedSince *time.Time
+	MessagesSent   int64
+}
+
+// TelemetryData holds all system health data for the telemetry page.
+type TelemetryData struct {
+	Sessions       []SessionInfo
+	NATSConnected  bool
+	Uptime         string
+	ActiveSessions int
+	TotalQueueDepth int64
+}
+
+// TelemetryPage renders the full telemetry page with layout.
+templ TelemetryPage(data TelemetryData) {
+	@layout.Base("Telemetry", TelemetryContent(data))
+}
+
+// TelemetryContent renders the telemetry content (full page body or HTMX fragment).
+templ TelemetryContent(data TelemetryData) {
+	<div
+		id="telemetry-content"
+		hx-get="/admin/telemetry"
+		hx-trigger="every 10s"
+		hx-target="#telemetry-content"
+		hx-swap="outerHTML"
+	>
+		<div class="page-header">
+			<h1>Telemetry</h1>
+			<span class="refresh-badge">Auto-refreshes every 10s</span>
+		</div>
+
+		<!-- System Overview -->
+		<div class="section">
+			<h2>System Overview</h2>
+			<div class="stats-grid">
+				<div class="stat-card">
+					<div class="stat-value">{ fmt.Sprintf("%d", data.ActiveSessions) }</div>
+					<div class="stat-label">Active Sessions</div>
+				</div>
+				<div class="stat-card">
+					<div class={ "stat-value", templ.KV("status-ok", data.NATSConnected), templ.KV("status-error", !data.NATSConnected) }>
+						if data.NATSConnected {
+							Connected
+						} else {
+							Disconnected
+						}
+					</div>
+					<div class="stat-label">NATS Status</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-value">{ data.Uptime }</div>
+					<div class="stat-label">Uptime</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Device Sessions -->
+		<div class="section">
+			<h2>Device Sessions</h2>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>JID</th>
+						<th>Status</th>
+						<th>Connected Since</th>
+						<th>Messages Sent</th>
+					</tr>
+				</thead>
+				<tbody>
+					for _, s := range data.Sessions {
+						<tr>
+							<td><code class="jid-code">{ s.JID }</code></td>
+							<td><span class="badge badge-success">{ s.Status }</span></td>
+							<td>
+								if s.ConnectedSince != nil {
+									{ s.ConnectedSince.Format("2006-01-02 15:04:05") }
+								} else {
+									<span class="text-muted">—</span>
+								}
+							</td>
+							<td>{ fmt.Sprintf("%d", s.MessagesSent) }</td>
+						</tr>
+					}
+					if len(data.Sessions) == 0 {
+						<tr>
+							<td colspan="4" class="empty-state">No active device sessions.</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+}
