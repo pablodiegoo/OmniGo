@@ -209,8 +209,11 @@ func TestQueueDepthTrackerExceeds(t *testing.T) {
 	if !qdt.Exceeds(wsID, 1000) {
 		t.Error("Exceeds(1000) should be true when depth = 1000")
 	}
-	if qdt.Exceeds(wsID, 999) {
-		t.Error("Exceeds(999) should be false when depth = 1000")
+	if !qdt.Exceeds(wsID, 999) {
+		t.Error("Exceeds(999) should be true when depth = 1000 (1000 >= 999)")
+	}
+	if qdt.Exceeds(wsID, 1001) {
+		t.Error("Exceeds(1001) should be false when depth = 1000")
 	}
 }
 
