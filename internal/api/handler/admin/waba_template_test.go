@@ -118,8 +118,9 @@ func TestWABATemplateHandler(t *testing.T) {
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 		c.SetPath("/admin/workspaces/:workspace_id/templates")
-		c.SetParamNames("workspace_id")
-		c.SetParamValues(ws.ID.String())
+		c.SetPathValues(echo.PathValues{
+			{Name: "workspace_id", Value: ws.ID.String()},
+		})
 
 		err := h.Create(c)
 		if err != nil {
@@ -176,8 +177,10 @@ func TestWABATemplateHandler(t *testing.T) {
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 		c.SetPath("/admin/workspaces/:workspace_id/templates/:template_id/sync")
-		c.SetParamNames("workspace_id", "template_id")
-		c.SetParamValues(ws.ID.String(), local.ID.String())
+		c.SetPathValues(echo.PathValues{
+			{Name: "workspace_id", Value: ws.ID.String()},
+			{Name: "template_id", Value: local.ID.String()},
+		})
 
 		err = h.Sync(c)
 		if err != nil {
