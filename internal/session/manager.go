@@ -11,9 +11,11 @@ import (
 	"time"
 
 	"go.mau.fi/whatsmeow/types"
+	waEvents "go.mau.fi/whatsmeow/types/events"
 
 	"github.com/pablojhp.omnigo/internal/channel"
 	whatsapp "github.com/pablojhp.omnigo/internal/channel/whatsapp"
+	"github.com/pablojhp.omnigo/internal/repository"
 )
 
 const (
@@ -31,22 +33,24 @@ const (
 // Manager coordinates WhatsApp device lifecycle: startup reconnection,
 // session registration, and graceful shutdown.
 type Manager struct {
-	db           *sql.DB
-	repo         *DeviceRepository
-	registry     *ActiveSession
-	dispatchers  *channel.Registry
-	waVersion    string
-	mu           sync.Mutex
+	db                  *sql.DB
+	repo                *DeviceRepository
+	registry            *ActiveSession
+	dispatchers         *channel.Registry
+	waVersion           string
+	recipientSessionRepo *repository.RecipientSessionRepository
+	mu                  sync.Mutex
 }
 
 // NewManager creates a session manager.
-func NewManager(db *sql.DB, repo *DeviceRepository, registry *ActiveSession, dispatchers *channel.Registry, waVersion string) *Manager {
+func NewManager(db *sql.DB, repo *DeviceRepository, registry *ActiveSession, dispatchers *channel.Registry, waVersion string, recipientSessionRepo *repository.RecipientSessionRepository) *Manager {
 	return &Manager{
-		db:          db,
-		repo:        repo,
-		registry:    registry,
-		dispatchers: dispatchers,
-		waVersion:   waVersion,
+		db:                  db,
+		repo:                repo,
+		registry:            registry,
+		dispatchers:         dispatchers,
+		waVersion:           waVersion,
+		recipientSessionRepo: recipientSessionRepo,
 	}
 }
 
@@ -147,6 +151,27 @@ func (m *Manager) reconnectDevice(ctx context.Context, d *Device) error {
 	m.registry.Add(sess)
 	adapter := whatsapp.NewWhatsAppAdapter(wc)
 	m.dispatchers.Register("whatsapp", adapter)
+
+	// Register event handler to update recipient_sessions on incoming messages
+	if m.recipientSessionRepo != nil {
+		wc.Client().AddEventHandler(func(evt interface{}) {
+			switch v := evt.(type) {
+			case *waEvents.Message:
+				if v.Info.IsFromMe {
+					return
+				}
+				senderJID := v.Info.Sender.String()
+				err := m.recipientSessionRepo.Upsert(context.Background(), d.WorkspaceID, senderJID, "whatsapp", time.Now().UTC())
+				if err != nil {
+					slog.Error("session manager: failed to upsert recipient session",
+						"error", err,
+						"workspace_id", d.WorkspaceID,
+						"sender_jid", senderJID,
+					)
+				}
+			}
+		})
+	}
 
 	// Start the client goroutine
 	go func() {
