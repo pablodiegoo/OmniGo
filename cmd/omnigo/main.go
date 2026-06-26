@@ -210,6 +210,10 @@ func main() {
 	}
 	messageHandler.RegisterRoutes(e, middleware.RateLimiterMiddleware(rateLimiter))
 
+	// --- Telegram Inbound Webhook handler ---
+	telegramWebhookHandler := handler.NewTelegramWebhookHandler(credentialsRepo, recipientSessionRepo)
+	e.POST("/webhooks/telegram/:workspace_id", telegramWebhookHandler.Handle)
+
 	// --- Admin panel routes ---
 	// Repositories for admin dashboard
 	wsRepo := repository.NewWorkspaceRepository(pool)

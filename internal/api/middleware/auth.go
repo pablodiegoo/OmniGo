@@ -17,6 +17,11 @@ import (
 func AuthMiddleware(repo *repository.APIKeyRepository) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c *echo.Context) error {
+			path := c.Request().URL.Path
+			if path == "/healthz" || path == "/readyz" || strings.HasPrefix(path, "/admin") || strings.HasPrefix(path, "/webhooks") {
+				return next(c)
+			}
+
 			authHeader := c.Request().Header.Get("Authorization")
 			if authHeader == "" {
 				return c.JSON(http.StatusUnauthorized, map[string]string{
