@@ -10,6 +10,8 @@ import (
 	"time"
 
 	"github.com/nats-io/nats.go/jetstream"
+
+	"github.com/pablojhp.omnigo/internal/channel"
 )
 
 const (
@@ -20,8 +22,7 @@ const (
 
 // Worker reads messages from a JetStream consumer and dispatches them.
 // It supports retry with exponential backoff, TTL enforcement, and
-// delivery deduplication. Phase 4 replaces the log-and-ack dispatch body
-// with a real Dispatcher.
+// delivery deduplication.
 type Worker struct {
 	consumer   jetstream.Consumer
 	cancel     context.CancelFunc
@@ -30,13 +31,19 @@ type Worker struct {
 	maxRetries int
 	maxBackoff time.Duration
 
+	// dispatchers provides channel-specific dispatchers.
+	// When nil or a channel has no registered dispatcher, messages
+	// are logged and acked (no-op).
+	dispatchers *channel.Registry
+
 	// dispatched tracks message IDs already processed (in-memory dedup).
 	dispatched sync.Map // message_id string → struct{}
 }
 
 // NewWorker starts a goroutine that reads messages from consumer and processes them.
 // The goroutine stops when ctx is cancelled. Call Stop() to initiate shutdown.
-func NewWorker(ctx context.Context, consumer jetstream.Consumer, maxRetries int, maxBackoff time.Duration) *Worker {
+// dispatchers may be nil for log-only mode (useful in tests).
+func NewWorker(ctx context.Context, consumer jetstream.Consumer, maxRetries int, maxBackoff time.Duration, dispatchers *channel.Registry) *Worker {
 	if maxRetries <= 0 {
 		maxRetries = defaultMaxRetries
 	}
@@ -131,16 +138,13 @@ func (w *Worker) processMessage(ctx context.Context, msg jetstream.Msg) {
 		return
 	}
 
-	// --- Dispatch (stub: log only — Phase 4 replaces with real dispatch) ---
-	slog.Info("message dispatched",
+	// --- Dispatch ---
+	slog.Info("worker: dispatching message",
 		"trace_id", traceID,
 		"subject", msg.Subject(),
-		"payload_preview", preview,
 		"attempt", attempt,
 	)
 
-	// Stub always succeeds. Phase 4 will call the real Dispatcher here
-	// and on error, NAK with backoff.
 	dispatchErr := w.dispatch(ctx, msg)
 
 	if dispatchErr != nil {
@@ -153,11 +157,41 @@ func (w *Worker) processMessage(ctx context.Context, msg jetstream.Msg) {
 	}
 }
 
-// dispatch is the dispatch function. In this stub phase, it always succeeds.
-// Phase 4 replaces this with a real channel dispatcher.
+// dispatch looks up the channel dispatcher from the payload and sends.
+// Returns nil if no dispatchers are registered or channel is unknown
+// (the message is effectively acked as a no-op — useful for testing).
 func (w *Worker) dispatch(ctx context.Context, msg jetstream.Msg) error {
-	// Stub: always succeeds
-	return nil
+	if w.dispatchers == nil {
+		return nil // no-op mode
+	}
+
+	// Extract channel from payload
+	var payload struct {
+		Channel string `json:"channel"`
+		To      string `json:"to"`
+		Body    string `json:"body"`
+		TraceID string `json:"trace_id"`
+	}
+	if err := json.Unmarshal(msg.Data(), &payload); err != nil {
+		return fmt.Errorf("worker: unmarshal payload: %w", err)
+	}
+
+	dispatcher, ok := w.dispatchers.Get(payload.Channel)
+	if !ok {
+		slog.Warn("worker: no dispatcher for channel, skipping",
+			"channel", payload.Channel,
+			"trace_id", payload.TraceID,
+		)
+		return nil // not an error — channel may not be configured yet
+	}
+
+	return dispatcher.Dispatch(ctx, &channel.MessagePayload{
+		MessageID: msg.Headers().Get("Nats-Msg-Id"),
+		TraceID:  payload.TraceID,
+		To:       payload.To,
+		Channel:  payload.Channel,
+		Body:     payload.Body,
+	})
 }
 
 // handleFailure NAKs the message with exponential backoff or marks as terminal failure.

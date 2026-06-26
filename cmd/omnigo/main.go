@@ -22,6 +22,7 @@ import (
 	"github.com/pablojhp.omnigo/internal/api/handler"
 	"github.com/pablojhp.omnigo/internal/api/handler/admin"
 	"github.com/pablojhp.omnigo/internal/api/middleware"
+	"github.com/pablojhp.omnigo/internal/channel"
 	"github.com/pablojhp.omnigo/internal/config"
 	"github.com/pablojhp.omnigo/internal/platform/audit"
 	echosrv "github.com/pablojhp.omnigo/internal/platform/echo"
@@ -92,7 +93,8 @@ func main() {
 	queueDepth := middleware.NewQueueDepthTracker()
 
 	// --- Worker (reads from JetStream, dispatches with retry/TTL/dedup) ---
-	worker := queue.NewWorker(ctx, consumer, 5, 60*time.Second)
+	dispatcherRegistry := channel.NewRegistry(nil) // populated by session manager in Phase 4
+	worker := queue.NewWorker(ctx, consumer, 5, 60*time.Second, dispatcherRegistry)
 	slog.Info("message worker started", "consumer", "worker-1")
 	slog.Info("rate limiter configured", "rps", 10, "burst", 10)
 	slog.Info("queue depth limit", "max", 1000)
