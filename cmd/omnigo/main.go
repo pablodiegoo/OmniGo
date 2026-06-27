@@ -138,8 +138,13 @@ func main() {
 	dispatcherRegistry.Register("whatsapp_cloud", wabaAdapter)
 	dispatcherRegistry.Register("telegram", telegramAdapter)
 
+	// --- Audit writer ---
+	auditWriter := audit.NewWriter(pool, 5000, 2)
+
 	deviceRepo := session.NewDeviceRepository(pool)
-	sessionManager := session.NewManager(db, deviceRepo, sessionRegistry, dispatcherRegistry, "2.3000.1025000000", recipientSessionRepo, s3Client)
+	dedupRepo := repository.NewInboundDedupRepository(pool)
+	wsRepo := repository.NewWorkspaceRepository(pool)
+	sessionManager := session.NewManager(db, deviceRepo, sessionRegistry, dispatcherRegistry, "2.3000.1025000000", recipientSessionRepo, s3Client, dedupRepo, publisher, auditWriter, wsRepo)
 	dispatchRepo := repository.NewMessageDispatchRepository(pool)
 	worker := queue.NewWorker(ctx, consumer, 5, 60*time.Second, dispatcherRegistry, dispatchRepo, publisher)
 	slog.Info("message worker started", "consumer", "worker-1")
@@ -154,9 +159,6 @@ func main() {
 
 	slog.Info("rate limiter configured", "rps", 10, "burst", 10)
 	slog.Info("queue depth limit", "max", 1000)
-
-	// --- Audit writer ---
-	auditWriter := audit.NewWriter(pool, 5000, 2)
 
 	// --- Debug server (pprof + expvar) ---
 	debugSrv := obs.StartDebugServer(net.JoinHostPort("127.0.0.1", cfg.DebugPort))
@@ -247,12 +249,16 @@ func main() {
 	e.GET("/media/:workspace_id/:hash", mediaHandler.Handle)
 
 	// --- Telegram Inbound Webhook handler ---
-	telegramWebhookHandler := handler.NewTelegramWebhookHandler(credentialsRepo, recipientSessionRepo)
+	telegramWebhookHandler := handler.NewTelegramWebhookHandler(wsRepo, credentialsRepo, recipientSessionRepo, dedupRepo, s3Client, publisher, auditWriter)
 	e.POST("/webhooks/telegram/:workspace_id", telegramWebhookHandler.Handle)
+
+	// --- WABA Inbound Webhook handler ---
+	wabaWebhookHandler := handler.NewWABAWebhookHandler(wsRepo, credentialsRepo, recipientSessionRepo, dedupRepo, s3Client, publisher, auditWriter)
+	e.GET("/webhooks/waba/:workspace_id", wabaWebhookHandler.HandleGet)
+	e.POST("/webhooks/waba/:workspace_id", wabaWebhookHandler.HandlePost)
 
 	// --- Admin panel routes ---
 	// Repositories for admin dashboard
-	wsRepo := repository.NewWorkspaceRepository(pool)
 	auditQuerier := audit.NewQuerier(pool)
 
 	// Public admin routes (no session auth required)
