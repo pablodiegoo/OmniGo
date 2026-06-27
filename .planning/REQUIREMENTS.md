@@ -17,9 +17,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Authentication
 
-- [ ] **AUTH-01**: API key authentication via SHA-256 hashed keys with cleartext prefix for lookup
-- [ ] **AUTH-02**: API key revocation (revoked_at timestamp, immediate cache invalidation)
-- [ ] **AUTH-03**: In-memory API key cache with TTL refresh to keep ingest path off the database
+- [x] **AUTH-01**: API key authentication via SHA-256 hashed keys with cleartext prefix for lookup
+- [x] **AUTH-02**: API key revocation (revoked_at timestamp, immediate cache invalidation)
+- [x] **AUTH-03**: In-memory API key cache with TTL refresh to keep ingest path off the database
 
 ### Queue
 
@@ -53,15 +53,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Media
 
-- [ ] **MEDIA-01**: Unified media field in message payload (image, document, audio) with channel-agnostic abstraction
-- [ ] **MEDIA-02**: Per-channel media upload/download paths (WhatsApp media upload ID, Telegram `sendPhoto`/`sendDocument`, WABA media URL)
-- [ ] **MEDIA-03**: Media storage policy (URL-pass-through or local blob storage with size limits)
+- [x] **MEDIA-01**: Unified media field in message payload (image, document, audio) with channel-agnostic abstraction
+- [x] **MEDIA-02**: Per-channel media upload/download paths (WhatsApp media upload ID, Telegram `sendPhoto`/`sendDocument`, WABA media URL)
+- [x] **MEDIA-03**: Media storage policy (URL-pass-through or local blob storage with size limits)
 
 ### Inbound
 
-- [ ] **INBD-01**: Inbound message ingestion from providers (WhatsApp Web via whatsmeow event handlers, WABA inbound webhooks, Telegram `getUpdates`/webhook)
-- [ ] **INBD-02**: Forward inbound messages to consumer application via webhook (durable, retried)
-- [ ] **INBD-03**: Inbound message audit logging with Trace-ID correlation
+- [x] **INBD-01**: Inbound message ingestion from providers (WhatsApp Web via whatsmeow event handlers, WABA inbound webhooks, Telegram `getUpdates`/webhook)
+- [x] **INBD-02**: Forward inbound messages to consumer application via webhook (durable, retried)
+- [x] **INBD-03**: Inbound message audit logging with Trace-ID correlation
 
 ### Fallback
 
@@ -79,43 +79,43 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Audit
 
-- [ ] **AUDIT-01**: Immutable `audit_logs` table partitioned by `created_at` (range partitioning for append-only workload)
-- [ ] **AUDIT-02**: Trace-ID propagation across all context boundaries (HTTP request → NATS message headers → worker `context.Context` → SQL transaction)
-- [ ] **AUDIT-03**: Buffered batch writer for audit inserts (bounded channel + background workers, protects DB from write spikes)
-- [ ] **AUDIT-04**: Audit log access via both API and admin dashboard (filterable by workspace, trace_id, time range)
+- [x] **AUDIT-01**: Immutable `audit_logs` table partitioned by `created_at` (range partitioning for append-only workload)
+- [x] **AUDIT-02**: Trace-ID propagation across all context boundaries (HTTP request → NATS message headers → worker `context.Context` → SQL transaction)
+- [x] **AUDIT-03**: Buffered batch writer for audit inserts (bounded channel + background workers, protects DB from write spikes)
+- [x] **AUDIT-04**: Audit log access via both API and admin dashboard (filterable by workspace, trace_id, time range)
 
 ### Admin
 
-- [ ] **ADMIN-01**: Server-rendered admin panel (Echo + Templ + HTMX, HTMX fragment detection)
-- [ ] **ADMIN-02**: Multi-tenant workspace management (create, isolate, manage scoped API keys)
+- [x] **ADMIN-01**: Server-rendered admin panel (Echo + Templ + HTMX, HTMX fragment detection)
+- [x] **ADMIN-02**: Multi-tenant workspace management (create, isolate, manage scoped API keys)
 - [x] **ADMIN-03**: Connection telemetry display (real-time session status, queue depths, channel health)
 - [x] **ADMIN-04**: QR code pairing interface (dynamically refreshed QR for WhatsApp Web device linking)
-- [ ] **ADMIN-05**: Audit log review interface (searchable, filterable, exportable)
+- [x] **ADMIN-05**: Audit log review interface (searchable, filterable, exportable)
 - [x] **ADMIN-06**: Ban-risk warning displayed on QR pairing UI (operators must not pair business-critical numbers unknowingly)
 
 ### Security
 
-- [ ] **SEC-01**: AES-256-GCM encryption at rest for session tokens and channel credentials (per-row nonce)
-- [ ] **SEC-02**: SHA-256 hashing for API keys (prefix stored cleartext for lookup, secret hashed)
-- [ ] **SEC-03**: Multi-tenant data isolation with enforced tenant-context convention (every query scoped to `workspace_id`, RLS or equivalent guard against cross-tenant leaks)
+- [x] **SEC-01**: AES-256-GCM encryption at rest for session tokens and channel credentials (per-row nonce)
+- [x] **SEC-02**: SHA-256 hashing for API keys (prefix stored cleartext for lookup, secret hashed)
+- [x] **SEC-03**: Multi-tenant data isolation with enforced tenant-context convention (every query scoped to `workspace_id`, RLS or equivalent guard against cross-tenant leaks)
 - [x] **SEC-04**: whatsmeow device key encryption (custom store wrapper or `pgcrypto` — bridge the plaintext storage gap in whatsmeow's internal `whatsmeow_device` table)
-- [ ] **SEC-05**: Key management with `key_id`/`key_version` columns for encryption key rotation
+- [x] **SEC-05**: Key management with `key_id`/`key_version` columns for encryption key rotation
 
 ### Observability
 
-- [ ] **OBS-01**: Health and readiness endpoints (`/healthz` liveness, `/readyz` with pgx ping + nats ping)
-- [ ] **OBS-02**: `net/http/pprof` runtime profiling integration (CPU, memory, goroutine diagnostics)
-- [ ] **OBS-03**: Structured logging via `log/slog` with Trace-ID context propagation
-- [ ] **OBS-04**: `expvar` metrics exposure (memory utilization, queue depths, execution latencies)
+- [x] **OBS-01**: Health and readiness endpoints (`/healthz` liveness, `/readyz` with pgx ping + nats ping)
+- [x] **OBS-02**: `net/http/pprof` runtime profiling integration (CPU, memory, goroutine diagnostics)
+- [x] **OBS-03**: Structured logging via `log/slog` with Trace-ID context propagation
+- [x] **OBS-04**: `expvar` metrics exposure (memory utilization, queue depths, execution latencies)
 
 ### Infrastructure
 
-- [ ] **INFRA-01**: Go 1.25+ with Echo v5 HTTP framework (v5 native `*slog.Logger` integration, `*echo.Context` handler signature)
-- [ ] **INFRA-02**: PostgreSQL via pgx/v5 with dual-access model (pgxpool for OmniGo queries + `pgx/v5/stdlib` bridge for whatsmeow `database/sql` and goose migrations)
-- [ ] **INFRA-03**: Database migrations via goose with embedded SQL files (versioned, one file per migration)
-- [ ] **INFRA-04**: Docker Compose deployment topology (omnigo + postgres + nats)
-- [ ] **INFRA-05**: Graceful shutdown (drain JetStream consumers, flush audit buffer, close connections, stop HTTP listener)
-- [ ] **INFRA-06**: Makefile with run, test, lint, `templ generate`, migrate targets
+- [x] **INFRA-01**: Go 1.25+ with Echo v5 HTTP framework (v5 native `*slog.Logger` integration, `*echo.Context` handler signature)
+- [x] **INFRA-02**: PostgreSQL via pgx/v5 with dual-access model (pgxpool for OmniGo queries + `pgx/v5/stdlib` bridge for whatsmeow `database/sql` and goose migrations)
+- [x] **INFRA-03**: Database migrations via goose with embedded SQL files (versioned, one file per migration)
+- [x] **INFRA-04**: Docker Compose deployment topology (omnigo + postgres + nats)
+- [x] **INFRA-05**: Graceful shutdown (drain JetStream consumers, flush audit buffer, close connections, stop HTTP listener)
+- [x] **INFRA-06**: Makefile with run, test, lint, `templ generate`, migrate targets
 - [x] **INFRA-07**: whatsmeow pseudo-version pinning (dated commit-hash, not `@latest`) with documented upgrade ritual
 
 ## v2 Requirements
@@ -174,9 +174,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | API-03 | Phase 3 | Complete |
 | API-04 | Phase 3 | Complete |
 | API-05 | Phase 3 | Complete |
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 | Complete |
+| AUTH-02 | Phase 1 | Complete |
+| AUTH-03 | Phase 1 | Complete |
 | QUEUE-01 | Phase 3 | Complete |
 | QUEUE-02 | Phase 3 | Complete |
 | QUEUE-03 | Phase 3 | Complete |
@@ -195,12 +195,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | WABA-04 | Phase 5 | Complete |
 | TGRAM-01 | Phase 5 | Complete |
 | TGRAM-02 | Phase 5 | Complete |
-| MEDIA-01 | Phase 7 | Pending |
-| MEDIA-02 | Phase 7 | Pending |
-| MEDIA-03 | Phase 7 | Pending |
-| INBD-01 | Phase 7 | Pending |
-| INBD-02 | Phase 7 | Pending |
-| INBD-03 | Phase 7 | Pending |
+| MEDIA-01 | Phase 7 | Complete |
+| MEDIA-02 | Phase 7 | Complete |
+| MEDIA-03 | Phase 7 | Complete |
+| INBD-01 | Phase 7 | Complete |
+| INBD-02 | Phase 7 | Complete |
+| INBD-03 | Phase 7 | Complete |
 | FALL-01 | Phase 5 | Complete |
 | FALL-02 | Phase 5 | Complete |
 | FALL-03 | Phase 5 | Complete |
@@ -209,31 +209,31 @@ Which phases cover which requirements. Updated during roadmap creation.
 | WHOOK-03 | Phase 6 | Complete |
 | WHOOK-04 | Phase 6 | Complete |
 | WHOOK-05 | Phase 6 | Complete |
-| AUDIT-01 | Phase 1 | Pending |
-| AUDIT-02 | Phase 1 | Pending |
-| AUDIT-03 | Phase 1 | Pending |
-| AUDIT-04 | Phase 2 | Pending |
-| ADMIN-01 | Phase 2 | Pending |
-| ADMIN-02 | Phase 2 | Pending |
+| AUDIT-01 | Phase 1 | Complete |
+| AUDIT-02 | Phase 1 | Complete |
+| AUDIT-03 | Phase 1 | Complete |
+| AUDIT-04 | Phase 2 | Complete |
+| ADMIN-01 | Phase 2 | Complete |
+| ADMIN-02 | Phase 2 | Complete |
 | ADMIN-03 | Phase 4 | Complete |
 | ADMIN-04 | Phase 4 | Complete |
-| ADMIN-05 | Phase 2 | Pending |
+| ADMIN-05 | Phase 2 | Complete |
 | ADMIN-06 | Phase 4 | Complete |
-| SEC-01 | Phase 1 | Pending |
-| SEC-02 | Phase 1 | Pending |
-| SEC-03 | Phase 1 | Pending |
+| SEC-01 | Phase 1 | Complete |
+| SEC-02 | Phase 1 | Complete |
+| SEC-03 | Phase 1 | Complete |
 | SEC-04 | Phase 4 | Complete |
-| SEC-05 | Phase 1 | Pending |
-| OBS-01 | Phase 1 | Pending |
-| OBS-02 | Phase 1 | Pending |
-| OBS-03 | Phase 1 | Pending |
-| OBS-04 | Phase 1 | Pending |
-| INFRA-01 | Phase 1 | Pending |
-| INFRA-02 | Phase 1 | Pending |
-| INFRA-03 | Phase 1 | Pending |
-| INFRA-04 | Phase 1 | Pending |
-| INFRA-05 | Phase 1 | Pending |
-| INFRA-06 | Phase 1 | Pending |
+| SEC-05 | Phase 1 | Complete |
+| OBS-01 | Phase 1 | Complete |
+| OBS-02 | Phase 1 | Complete |
+| OBS-03 | Phase 1 | Complete |
+| OBS-04 | Phase 1 | Complete |
+| INFRA-01 | Phase 1 | Complete |
+| INFRA-02 | Phase 1 | Complete |
+| INFRA-03 | Phase 1 | Complete |
+| INFRA-04 | Phase 1 | Complete |
+| INFRA-05 | Phase 1 | Complete |
+| INFRA-06 | Phase 1 | Complete |
 | INFRA-07 | Phase 4 | Complete |
 
 **Coverage:**
@@ -256,4 +256,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-06-25*
-*Last updated: 2026-06-25 after roadmap creation*
+*Last updated: 2026-06-27 after milestone verification*
