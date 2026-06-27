@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"log/slog"
 	"net/http"
 	"time"
@@ -13,6 +14,7 @@ import (
 	"github.com/pablojhp.omnigo/internal/api/middleware"
 	"github.com/pablojhp.omnigo/internal/domain"
 	"github.com/pablojhp.omnigo/internal/platform/postgres/tenant"
+	"github.com/pablojhp.omnigo/internal/platform/storage"
 )
 
 // Publisher defines the interface for publishing messages to a queue.
@@ -25,6 +27,7 @@ type Publisher interface {
 type MessageHandler struct {
 	Publisher  Publisher
 	QueueDepth *middleware.QueueDepthTracker
+	S3Client   *storage.S3Client
 }
 
 // RegisterRoutes wires the message endpoints onto the Echo router.
@@ -72,6 +75,52 @@ func (h *MessageHandler) Create(c *echo.Context) error {
 		return c.JSON(http.StatusBadRequest, *validationErr)
 	}
 
+	// Handle media downloading and validation if present
+	if req.Media != nil {
+		if h.S3Client == nil {
+			slog.Error("S3 storage client is not configured for media downloads", "trace_id", traceID)
+			return c.JSON(http.StatusInternalServerError, domain.ErrorResponse{
+				Code:    "internal_error",
+				Message: "media storage configuration error",
+			})
+		}
+
+		res, err := storage.DownloadAndValidate(c.Request().Context(), req.Media.MediaURL, 25000000)
+		if err != nil {
+			if errors.Is(err, storage.ErrMediaSizeExceeded) {
+				return c.JSON(http.StatusUnprocessableEntity, domain.ErrorResponse{
+					Code:    "media_size_exceeded",
+					Message: "the downloaded file exceeds the maximum size boundary of 25MB",
+					Details: []domain.FieldError{
+						{Field: "media.media_url", Message: "file exceeds 25MB limit"},
+					},
+				})
+			}
+			return c.JSON(http.StatusUnprocessableEntity, domain.ErrorResponse{
+				Code:    "media_download_failed",
+				Message: "failed to download media from the specified URL",
+				Details: []domain.FieldError{
+					{Field: "media.media_url", Message: err.Error()},
+				},
+			})
+		}
+
+		// Store downloaded media in S3.
+		// Key format: {workspace_id}/{content_hash}.{ext}
+		key := workspaceID.String() + "/" + res.Hash + "." + res.Extension
+		if err := h.S3Client.Upload(c.Request().Context(), key, res.Bytes, res.ContentType); err != nil {
+			slog.Error("failed to upload media to S3", "error", err, "trace_id", traceID, "key", key)
+			return c.JSON(http.StatusInternalServerError, domain.ErrorResponse{
+				Code:    "internal_error",
+				Message: "failed to store media file",
+			})
+		}
+
+		// Rewire the message payload's MediaURL to the internal proxy URL.
+		// Format: /media/{workspace_id}/{hash}.{ext}
+		req.Media.MediaURL = "/media/" + workspaceID.String() + "/" + res.Hash + "." + res.Extension
+	}
+
 	// Generate message ID
 	msgID := uuid.New()
 
@@ -86,6 +135,7 @@ func (h *MessageHandler) Create(c *echo.Context) error {
 			To:               req.To,
 			Channel:          req.Channel,
 			Body:             req.Body,
+			Media:            req.Media,
 			Metadata:         req.Metadata,
 			TTLSeconds:       req.TTLSeconds,
 			QueuedAt:         queuedAt,
