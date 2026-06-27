@@ -148,6 +148,7 @@ func TestValidateMessageNilTTL(t *testing.T) {
 	req := &CreateMessageRequest{
 		To:         "+1234567890",
 		Channel:    "whatsapp",
+		Body:       "Hello",
 		TTLSeconds: nil,
 	}
 	if err := ValidateMessage(req); err != nil {
@@ -155,14 +156,130 @@ func TestValidateMessageNilTTL(t *testing.T) {
 	}
 }
 
-func TestValidateMessageOptionalBody(t *testing.T) {
+func TestValidateMessageEmptyBodyAndMedia(t *testing.T) {
 	req := &CreateMessageRequest{
 		To:      "+1234567890",
 		Channel: "whatsapp",
 		Body:    "",
+		Media:   nil,
 	}
-	if err := ValidateMessage(req); err != nil {
-		t.Errorf("expected nil error for empty body, got %+v", err)
+	err := ValidateMessage(req)
+	if err == nil {
+		t.Fatal("expected error for empty body and media, got nil")
+	}
+	found := false
+	for _, d := range err.Details {
+		if d.Field == "body" {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Errorf("expected field error for 'body', got %+v", err.Details)
+	}
+}
+
+func TestValidateMessageMedia(t *testing.T) {
+	tests := []struct {
+		name        string
+		media       *Media
+		body        string
+		expectError bool
+		errField    string
+	}{
+		{
+			name: "valid image",
+			media: &Media{
+				MediaURL:  "https://example.com/image.png",
+				MediaType: "image",
+			},
+			expectError: false,
+		},
+		{
+			name: "valid document with filename",
+			media: &Media{
+				MediaURL:  "https://example.com/doc.pdf",
+				MediaType: "document",
+				Filename:  "doc.pdf",
+			},
+			expectError: false,
+		},
+		{
+			name: "document missing filename",
+			media: &Media{
+				MediaURL:  "https://example.com/doc.pdf",
+				MediaType: "document",
+			},
+			expectError: true,
+			errField:    "media.filename",
+		},
+		{
+			name: "invalid media type",
+			media: &Media{
+				MediaURL:  "https://example.com/file.txt",
+				MediaType: "text",
+			},
+			expectError: true,
+			errField:    "media.media_type",
+		},
+		{
+			name: "empty media url",
+			media: &Media{
+				MediaURL:  "",
+				MediaType: "image",
+			},
+			expectError: true,
+			errField:    "media.media_url",
+		},
+		{
+			name: "invalid url scheme",
+			media: &Media{
+				MediaURL:  "ftp://example.com/image.png",
+				MediaType: "image",
+			},
+			expectError: true,
+			errField:    "media.media_url",
+		},
+		{
+			name: "both body and media present",
+			body: "Hello",
+			media: &Media{
+				MediaURL:  "https://example.com/image.png",
+				MediaType: "image",
+			},
+			expectError: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req := &CreateMessageRequest{
+				To:      "+1234567890",
+				Channel: "whatsapp",
+				Body:    tt.body,
+				Media:   tt.media,
+			}
+			err := ValidateMessage(req)
+			if tt.expectError {
+				if err == nil {
+					t.Fatal("expected error, got nil")
+				}
+				found := false
+				for _, d := range err.Details {
+					if d.Field == tt.errField {
+						found = true
+						break
+					}
+				}
+				if !found {
+					t.Errorf("expected field error for %q, got %+v", tt.errField, err.Details)
+				}
+			} else {
+				if err != nil {
+					t.Errorf("expected no error, got %+v", err)
+				}
+			}
+		})
 	}
 }
 

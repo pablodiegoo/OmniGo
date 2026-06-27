@@ -4,6 +4,7 @@ package domain
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -27,11 +28,20 @@ var ValidChannels = map[string]bool{
 	"telegram":      true,
 }
 
+// Media represents media payload (URL, type, filename, caption).
+type Media struct {
+	MediaURL  string `json:"media_url"`
+	MediaType string `json:"media_type"`
+	Filename  string `json:"filename,omitempty"`
+	Caption   string `json:"caption,omitempty"`
+}
+
 // CreateMessageRequest is the JSON payload for POST /messages.
 type CreateMessageRequest struct {
 	To               string              `json:"to"`
 	Channel          string              `json:"channel"`
 	Body             string              `json:"body"`
+	Media            *Media              `json:"media,omitempty"`
 	Metadata         map[string]string   `json:"metadata,omitempty"`
 	TTLSeconds       *int                `json:"ttl_seconds,omitempty"`
 	TemplateName     string              `json:"template_name,omitempty"`
@@ -47,6 +57,7 @@ type QueueMessage struct {
 	To               string              `json:"to"`
 	Channel          string              `json:"channel"`
 	Body             string              `json:"body"`
+	Media            *Media              `json:"media,omitempty"`
 	Metadata         map[string]string   `json:"metadata,omitempty"`
 	TTLSeconds       *int                `json:"ttl_seconds,omitempty"`
 	QueuedAt         time.Time           `json:"queued_at"`
@@ -154,6 +165,46 @@ func ValidateMessage(req *CreateMessageRequest) *ErrorResponse {
 			})
 		}
 		seen[fb] = true
+	}
+
+	// Validate Body & Media payload presence
+	if req.Media != nil {
+		if req.Media.MediaType != "image" && req.Media.MediaType != "document" && req.Media.MediaType != "audio" && req.Media.MediaType != "video" {
+			details = append(details, FieldError{
+				Field:   "media.media_type",
+				Message: "must be one of: image, document, audio, video",
+			})
+		}
+		
+		// MediaURL validation: check empty and scheme
+		hasValidPrefix := false
+		lowerURL := strings.ToLower(req.Media.MediaURL)
+		if strings.HasPrefix(lowerURL, "http://") || strings.HasPrefix(lowerURL, "https://") {
+			hasValidPrefix = true
+		}
+		if req.Media.MediaURL == "" {
+			details = append(details, FieldError{
+				Field:   "media.media_url",
+				Message: "is required when media is provided",
+			})
+		} else if !hasValidPrefix {
+			details = append(details, FieldError{
+				Field:   "media.media_url",
+				Message: "must be a valid HTTP/HTTPS URL",
+			})
+		}
+
+		if req.Media.MediaType == "document" && req.Media.Filename == "" {
+			details = append(details, FieldError{
+				Field:   "media.filename",
+				Message: "is required when media_type is document",
+			})
+		}
+	} else if req.TemplateName == "" && req.Body == "" {
+		details = append(details, FieldError{
+			Field:   "body",
+			Message: "either body or media is required",
+		})
 	}
 
 	if len(details) > 0 {
