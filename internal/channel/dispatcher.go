@@ -8,6 +8,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+
+	"github.com/pablojhp.omnigo/internal/domain"
 )
 
 // MessagePayload is the channel-layer message contract, separate from the
@@ -18,6 +20,7 @@ type MessagePayload struct {
 	To           string
 	Channel      string
 	Body         string
+	Media        *domain.Media
 	Metadata     map[string]string
 	TemplateName string
 	Language     string

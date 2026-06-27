@@ -294,6 +294,7 @@ func (w *Worker) dispatchToChannel(ctx context.Context, channelName string, qMsg
 		To:           qMsg.To,
 		Channel:      channelName,
 		Body:         qMsg.Body,
+		Media:        qMsg.Media,
 		Metadata:     qMsg.Metadata,
 		TemplateName: qMsg.TemplateName,
 		Language:     qMsg.Language,
