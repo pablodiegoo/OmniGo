@@ -1,16 +1,16 @@
 # Graph Report - OmniGo  (2026-06-27)
 
 ## Corpus Check
-- 1195 files · ~1,112,080 words
+- 1199 files · ~1,718,595 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 7243 nodes · 7444 edges · 1089 communities (974 shown, 115 thin omitted)
-- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 547 edges (avg confidence: 0.8)
+- 7804 nodes · 8014 edges · 1095 communities (980 shown, 115 thin omitted)
+- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 558 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c64ea863`
+- Built from commit: `45390f96`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -656,18 +656,24 @@
 - [[_COMMUNITY_Community 638|Community 638]]
 - [[_COMMUNITY_Community 639|Community 639]]
 - [[_COMMUNITY_Community 640|Community 640]]
+- [[_COMMUNITY_Community 1089|Community 1089]]
+- [[_COMMUNITY_Community 1090|Community 1090]]
+- [[_COMMUNITY_Community 1091|Community 1091]]
+- [[_COMMUNITY_Community 1092|Community 1092]]
+- [[_COMMUNITY_Community 1093|Community 1093]]
+- [[_COMMUNITY_Community 1094|Community 1094]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `New()` - 110 edges
-2. `main()` - 51 edges
-3. `NewWorkspaceRepository()` - 30 edges
-4. `Render()` - 29 edges
-5. `String()` - 26 edges
-6. `Manager` - 24 edges
-7. `setupWorkspaceRoutes()` - 21 edges
-8. `Worker` - 19 edges
-9. `Phase 1: Foundation — Research` - 19 edges
-10. `Phase 2: Admin Shell - Research` - 19 edges
+1. `Communities (1089 total, 115 thin omitted)` - 527 edges
+2. `New()` - 115 edges
+3. `main()` - 51 edges
+4. `NewWorkspaceRepository()` - 30 edges
+5. `Render()` - 29 edges
+6. `String()` - 26 edges
+7. `Manager` - 24 edges
+8. `setupWorkspaceRoutes()` - 21 edges
+9. `setupAuditTestRoutes()` - 20 edges
+10. `Worker` - 19 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `setupAuditTestRoutes()` --calls--> `LoginPost()`  [INFERRED]
@@ -678,13 +684,13 @@
   cmd/omnigo/admin_audit_test.go → internal/api/middleware/htmx.go
 - `setupAuditTestRoutes()` --calls--> `SessionAuthMiddleware()`  [INFERRED]
   cmd/omnigo/admin_audit_test.go → internal/api/middleware/session.go
-- `setupAuditTestRoutes()` --calls--> `NewAuditRepository()`  [INFERRED]
-  cmd/omnigo/admin_audit_test.go → internal/repository/audit.go
+- `setupAuditTestRoutes()` --calls--> `RunMigrations()`  [INFERRED]
+  cmd/omnigo/admin_audit_test.go → internal/platform/postgres/migrate.go
 
 ## Import Cycles
 - None detected.
 
-## Communities (1089 total, 115 thin omitted)
+## Communities (1095 total, 115 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.05
@@ -699,12 +705,12 @@ Cohesion: 0.03
 Nodes (57): File Location, After Checkpoint, Balance Research and Reasoning, Binary Search / Divide and Conquer, Checkpoint Format, CHECKPOINT REACHED, Checkpoint Types, Combining Techniques (+49 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.06
-Nodes (46): Int64, Context, Logger, MessagePayload, S3Client, WhatsAppClient, T, T (+38 more)
+Cohesion: 0.17
+Nodes (17): ActiveSession, DB, DeviceRepository, InboundDedupRepository, JetStreamPublisher, Mutex, RecipientSessionRepository, Registry (+9 more)
 
 ### Community 4 - "Community 4"
-Cohesion: 0.07
-Nodes (43): CreateMessageRequest, CreateMessageResponse, ErrorResponse, FieldError, Media, TestErrorResponseJSON(), TestMessageStatusValues(), TestValidateMessageEmptyBodyAndMedia() (+35 more)
+Cohesion: 0.13
+Nodes (30): CreateMessageRequest, CreateMessageResponse, ErrorResponse, FieldError, Media, TestErrorResponseJSON(), TestMessageStatusValues(), TestValidateMessageEmptyBodyAndMedia() (+22 more)
 
 ### Community 5 - "Community 5"
 Cohesion: 0.04
@@ -728,15 +734,15 @@ Nodes (43): Alternatives Considered, Anti-Patterns to Avoid, Applicable ASVS Cat
 
 ### Community 10 - "Community 10"
 Cohesion: 0.07
-Nodes (24): Header, Context, Duration, MessagePayload, Pool, T, Context, Pool (+16 more)
+Nodes (22): Header, Context, Duration, MessagePayload, Pool, T, Context, Pool (+14 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.05
 Nodes (42): Anti-Patterns to Avoid, Architectural Patterns, Architecture Research, Component Responsibilities, Concurrency Model Validation, Data Flow, External services, GAP 10 — Idempotency at the provider boundary (MEDIUM impact, design decision) (+34 more)
 
 ### Community 12 - "Community 12"
-Cohesion: 0.14
-Nodes (34): New(), TestMessageHandler_CreateWithMedia(), testContext(), TestCreateMessageInvalidChannel(), TestCreateMessageInvalidFallbackChannels(), TestCreateMessageInvalidJSON(), TestCreateMessageMissingAuth(), TestCreateMessageMissingTo() (+26 more)
+Cohesion: 0.16
+Nodes (32): New(), testContext(), TestCreateMessageInvalidChannel(), TestCreateMessageInvalidFallbackChannels(), TestCreateMessageInvalidJSON(), TestCreateMessageMissingAuth(), TestCreateMessageMissingTo(), TestCreateMessageQueueDepthIncremented() (+24 more)
 
 ### Community 13 - "Community 13"
 Cohesion: 0.05
@@ -747,8 +753,8 @@ Cohesion: 0.05
 Nodes (37): Dimension 10: AGENTS.md Compliance, Check 8a — Automated Verify Presence, Check 8b — Feedback Latency Assessment, Check 8c — Sampling Continuity, Check 8d — Wave 0 Completeness, Check 8e — VALIDATION.md Existence (Gate), Dimension 11: Research Resolution (#1602), Dimension 12: Pattern Compliance (#1861) (+29 more)
 
 ### Community 15 - "Community 15"
-Cohesion: 0.10
-Nodes (25): NewEncryptor(), Encryptor, CancelFunc, Client, Conn, Consumer, Context, JetStream (+17 more)
+Cohesion: 0.08
+Nodes (36): Conn, Context, JetStream, Conn, T, CancelFunc, Client, Conn (+28 more)
 
 ### Community 16 - "Community 16"
 Cohesion: 0.06
@@ -787,24 +793,24 @@ Cohesion: 0.06
 Nodes (31): 1. System Classification, 1b. Domain Context, 2. Framework Decision, 3. Framework Quick Reference, 4. Implementation Guidance, 4b. AI Systems Best Practices, 5. Evaluation Strategy, 6. Guardrails (+23 more)
 
 ### Community 25 - "Community 25"
-Cohesion: 0.14
-Nodes (25): NewWriter(), BatchWriter, Writer, Pool, T, Event, Context, MiddlewareFunc (+17 more)
+Cohesion: 0.18
+Nodes (21): NewWriter(), Writer, Pool, T, Context, MiddlewareFunc, TraceIDFrom(), TraceMiddleware() (+13 more)
 
 ### Community 26 - "Community 26"
-Cohesion: 0.09
-Nodes (24): LoadDefaultConfig(), WithCredentialsProvider(), WithRegion(), LoadOptions, CredentialsProvider, getTestPool(), TestInboundAuditLogging(), TestTelegramWebhookHandler() (+16 more)
+Cohesion: 0.17
+Nodes (12): getTestPool(), TestInboundAuditLogging(), TestTelegramWebhookHandler(), Pool, T, Context, Pool, UUID (+4 more)
 
 ### Community 27 - "Community 27"
 Cohesion: 0.11
-Nodes (23): getTestPool(), TestWABATemplateHandler(), T, Pool, T, Pool, T, DB (+15 more)
+Nodes (23): Conn, Context, DB, Pool, T, envOrDefault(), Load(), Config (+15 more)
 
 ### Community 28 - "Community 28"
 Cohesion: 0.07
 Nodes (28): **1\. Executive Summary**, **1\. Unified Message Ingestion Gateway**, **2\. Multi-Tenant Dashboard Control Panel**, **2\. Problem and Opportunity**, **30-Day Evaluation: System Stability**, **3\. Multi-Session Connection and Instance Controller**, **3\. Objectives and Key Results**, **4\. Smart Queueing, Backpressure, and Rate-Limiting Engine** (+20 more)
 
 ### Community 29 - "Community 29"
-Cohesion: 0.10
-Nodes (16): Client, Context, DB, Device, JID, Logger, Context, Manager (+8 more)
+Cohesion: 0.06
+Nodes (35): BatchWriter, Event, Client, Context, DB, Device, JID, Logger (+27 more)
 
 ### Community 30 - "Community 30"
 Cohesion: 0.07
@@ -859,8 +865,8 @@ Cohesion: 0.08
 Nodes (25): 1. AWS SDK v2 S3 Client Initialization, Upload, and Download, 2. Inbound Webhook Event Payloads & NATS Stream Setup, 3. whatsmeow Inbound Event Loop Extension, 4. Telegram Webhook Parsing (Media, Location, Contact) & Download Flow, 5. WABA Webhook GET Verification & POST Parsing & Download Flow, 6. Database Schema and Query-Level Deduplication, Code Snippets / Examples Showing Exact Patterns, Integration Testing (+17 more)
 
 ### Community 43 - "Community 43"
-Cohesion: 0.12
-Nodes (15): APIKeyHandler, DeviceHandler, APIKeyRepository, Context, WorkspaceRepository, ActiveSession, Context, DeviceRepository (+7 more)
+Cohesion: 0.13
+Nodes (18): DeviceHandler, pairingState, BanWarning(), ActiveSession, Context, DeviceRepository, Manager, RWMutex (+10 more)
 
 ### Community 44 - "Community 44"
 Cohesion: 0.12
@@ -871,16 +877,16 @@ Cohesion: 0.08
 Nodes (24): Admin, API, Audit, Authentication, Compliance, Fallback, Inbound, Infrastructure (+16 more)
 
 ### Community 46 - "Community 46"
-Cohesion: 0.12
-Nodes (19): String(), Context, Pool, T, UUID, T, T, T (+11 more)
+Cohesion: 0.09
+Nodes (21): getTestPool(), TestWABATemplateHandler(), NewEncryptor(), Encryptor, Pool, T, Pool, T (+13 more)
 
 ### Community 47 - "Community 47"
-Cohesion: 0.15
-Nodes (14): JID, RWMutex, WhatsAppClient, T, ActiveSession, NewActiveSession(), TestActiveSessionAddGet(), TestActiveSessionAll() (+6 more)
+Cohesion: 0.22
+Nodes (5): JID, RWMutex, WhatsAppClient, ActiveSession, Session
 
 ### Community 48 - "Community 48"
-Cohesion: 0.21
-Nodes (19): parseAuditFilters(), AuditHandler, AuditEntry, AuditRepository, AuditFilters, Context, WorkspaceRepository, AuditFiltersUI() (+11 more)
+Cohesion: 0.42
+Nodes (13): AuditEntry, AuditFiltersUI(), AuditPage(), AuditPageContent(), AuditPagination(), AuditTable(), AuditTableFragment(), buildExportURL() (+5 more)
 
 ### Community 49 - "Community 49"
 Cohesion: 0.09
@@ -895,12 +901,12 @@ Cohesion: 0.09
 Nodes (22): Ambiguity Resolution, At Milestone Completion, Check Order, Cleanup, Creating Overrides, During Re-verification, Example VERIFICATION.md, Examples (+14 more)
 
 ### Community 52 - "Community 52"
-Cohesion: 0.21
-Nodes (19): Pool, T, hmacEqual(), VerifyAPIKey(), APIKeyRepository, MiddlewareFunc, AuthMiddleware(), mustPool() (+11 more)
+Cohesion: 0.17
+Nodes (21): Pool, T, hmacEqual(), VerifyAPIKey(), APIKeyRepository, MiddlewareFunc, T, AuthMiddleware() (+13 more)
 
 ### Community 53 - "Community 53"
-Cohesion: 0.18
-Nodes (15): CancelFunc, Consumer, Context, Duration, JetStreamPublisher, Map, Msg, Registry (+7 more)
+Cohesion: 0.00
+Nodes (527): Communities (1089 total, 115 thin omitted), Community 0 - "Community 0", Community 100 - "Community 100", Community 101 - "Community 101", Community 102 - "Community 102", Community 103 - "Community 103", Community 104 - "Community 104", Community 105 - "Community 105" (+519 more)
 
 ### Community 54 - "Community 54"
 Cohesion: 0.09
@@ -947,8 +953,8 @@ Cohesion: 0.15
 Nodes (17): NATSStatus, SessionInfo, formatDuration(), TelemetryData, TelemetryHandler, ActiveSession, Context, Duration (+9 more)
 
 ### Community 65 - "Community 65"
-Cohesion: 0.20
-Nodes (14): NewWABATemplateHandler(), WABATemplateHandler, Client, Context, CredentialsRepository, IsHTMX(), WABATemplateCreateForm(), WABATemplateListContent() (+6 more)
+Cohesion: 0.15
+Nodes (18): NewWABATemplateHandler(), WABATemplateHandler, Client, Context, CredentialsRepository, Context, MiddlewareFunc, HTMXMiddleware() (+10 more)
 
 ### Community 66 - "Community 66"
 Cohesion: 0.20
@@ -1007,8 +1013,8 @@ Cohesion: 0.33
 Nodes (18): Cookie, Echo, Pool, T, Time, UUID, getAuditSessionCookie(), seedAuditEvent() (+10 more)
 
 ### Community 80 - "Community 80"
-Cohesion: 0.13
-Nodes (17): Client, CredentialsRepository, wabaTemplate, wabaComponent, wabaLanguage, wabaParameter, wabaText, NewWABAAdapter() (+9 more)
+Cohesion: 0.14
+Nodes (13): wabaTemplate, wabaComponent, wabaLanguage, wabaParameter, wabaText, MetaErrorResponse, wabaComponent, WABAConfig (+5 more)
 
 ### Community 81 - "Community 81"
 Cohesion: 0.11
@@ -1083,8 +1089,8 @@ Cohesion: 0.12
 Nodes (16): InboundContact, InboundEventPayload, InboundLocation, InboundMedia, ValueData, ValueStruct, contentHash(), wabaMediaObj (+8 more)
 
 ### Community 99 - "Community 99"
-Cohesion: 0.23
-Nodes (14): Conn, Context, JetStream, Conn, T, EnsureStream(), EnsureWebhookStream(), connectNATS() (+6 more)
+Cohesion: 0.10
+Nodes (20): LoadDefaultConfig(), WithCredentialsProvider(), WithRegion(), LoadOptions, CredentialsProvider, TestMessageHandler_CreateWithMedia(), Context, T (+12 more)
 
 ### Community 100 - "Community 100"
 Cohesion: 0.12
@@ -1115,8 +1121,8 @@ Cohesion: 0.12
 Nodes (15): 1. Setup, 2. Brownfield Offer, 2a. Auto Mode Config (auto mode only), 2b. Prior Spike/Sketch Detection, 3. Deep Questioning, 4. Write PROJECT.md, 5.1. Sub-Repo Detection, 5.5. Resolve Model Profile (+7 more)
 
 ### Community 107 - "Community 107"
-Cohesion: 0.19
-Nodes (13): BanWarning(), DeviceCard(), DeviceStatusBadge(), DeviceStatus, DeviceListContent(), DeviceListPage(), PairForm(), QRFragment() (+5 more)
+Cohesion: 0.47
+Nodes (5): DeviceCard(), DeviceStatusBadge(), DeviceStatus, Component, Device
 
 ### Community 108 - "Community 108"
 Cohesion: 0.23
@@ -1211,8 +1217,8 @@ Cohesion: 0.31
 Nodes (9): HashAPIKey(), Context, Pool, RWMutex, Time, UUID, APIKey, APIKeyRepository (+1 more)
 
 ### Community 131 - "Community 131"
-Cohesion: 0.24
-Nodes (11): NewMediaHandler(), MediaHandler, Context, S3Client, Context, UUID, TestTenantContext(), contextKey (+3 more)
+Cohesion: 0.18
+Nodes (13): NewMediaHandler(), MediaHandler, Context, S3Client, Context, MessagePayload, Context, UUID (+5 more)
 
 ### Community 132 - "Community 132"
 Cohesion: 0.14
@@ -1319,12 +1325,12 @@ Cohesion: 0.15
 Nodes (12): 10. Present Final Status, 11. Commit (if configured), 12. Update State, 1. Initialize, 2. Parse and Validate Phase, 3. Check Prerequisites, 4. Check Existing UI-SPEC, 5. Spawn gsd-ui-researcher (+4 more)
 
 ### Community 158 - "Community 158"
-Cohesion: 0.22
-Nodes (7): NewTerminalError(), Context, MessagePayload, Context, MessagePayload, Request, MetaErrorResponse
+Cohesion: 0.29
+Nodes (8): NewTerminalError(), Client, Context, CredentialsRepository, MessagePayload, NewWABAAdapter(), WABAAdapter, WindowChecker
 
 ### Community 159 - "Community 159"
-Cohesion: 0.24
-Nodes (9): Context, Pool, Time, UUID, T, NewRecipientSessionRepository(), TestRecipientSessionRepository(), RecipientSession (+1 more)
+Cohesion: 0.17
+Nodes (13): connectNATS(), TestWABAWebhook_Inbound(), Conn, T, Context, Pool, Time, UUID (+5 more)
 
 ### Community 160 - "Community 160"
 Cohesion: 0.15
@@ -1435,8 +1441,8 @@ Cohesion: 0.17
 Nodes (11): 4. Concurrency & Performance Strategy, Audit batch writer (classic bounded-buffer fan-in), Fan-out at the worker pool, not at the request, Load envelope (the budget we design against), Patterns applied, Per-session rate limiter (staggered dispatch), Performance knobs (sized from the envelope, not guessed), Pipeline: ingest → broker → worker → channel → audit (+3 more)
 
 ### Community 187 - "Community 187"
-Cohesion: 0.32
-Nodes (10): ConfirmModal(), APIKeyGenerateForm(), APIKeyListFragment(), APIKeyRevealed(), APIKeyRevokeConfirm(), APIKeyRow(), Component, APIKey (+2 more)
+Cohesion: 0.17
+Nodes (14): APIKeyHandler, ConfirmModal(), APIKeyRepository, Context, WorkspaceRepository, APIKeyGenerateForm(), APIKeyListFragment(), APIKeyRevealed() (+6 more)
 
 ### Community 188 - "Community 188"
 Cohesion: 0.35
@@ -1699,16 +1705,16 @@ Cohesion: 0.20
 Nodes (9): 6.1 Trace-ID propagation (`internal/platform/trace`), 6.2 Ingest handler (`internal/messaging/ingest.go`), 6.3 JetStream publish with Trace-ID header (`internal/messaging/queue.go`), 6.4 Channel dispatcher interface — earned (3 real impls), 6.5 Routing engine — sequential fallback pipeline, 6.6 Worker loop — JetStream pull consumer, 6.7 Audit batch writer — bounded buffer, non-blocking on hot path, 6.8 Per-session worker with rate limiter (`internal/session`) (+1 more)
 
 ### Community 253 - "Community 253"
-Cohesion: 0.22
-Nodes (6): Conn, Context, DB, Pool, runServer(), natsConn
+Cohesion: 0.18
+Nodes (10): Manual-Only Verifications, Per-Task Verification Map, Phase 04 — Validation Strategy, Plan 04-01: Dispatcher Interface, Registry, WhatsApp Adapter, Plan 04-02: Multi-Session Manager, Plan 04-03: Admin UI (QR Pairing + Telemetry), Requirement Coverage Summary, Sampling Rate (+2 more)
 
 ### Community 254 - "Community 254"
 Cohesion: 0.20
 Nodes (9): Anti-Patterns, MVP-Mode Node Rendering, Step 0 -- Banner, Step 1 -- Config Gate, Step 2 -- Parse Argument, Step 2a -- Query, Step 2b -- Status, Step 2c -- Diff (+1 more)
 
 ### Community 255 - "Community 255"
-Cohesion: 0.29
-Nodes (8): Client, CredentialsRepository, S3Client, NewTelegramAdapter(), TelegramAdapter, TelegramConfig, TelegramErrorResponse, telegramMessageRequest
+Cohesion: 0.23
+Nodes (9): Client, CredentialsRepository, S3Client, Request, NewTelegramAdapter(), TelegramAdapter, TelegramConfig, TelegramErrorResponse (+1 more)
 
 ### Community 256 - "Community 256"
 Cohesion: 0.33
@@ -1923,20 +1929,20 @@ Cohesion: 0.25
 Nodes (7): Goal Achievement, Notes, Observable Truths, Phase 4: WhatsApp Web & QR Pairing Verification Report, Required Artifacts, Requirement Traceability, Test Coverage
 
 ### Community 309 - "Community 309"
-Cohesion: 0.25
-Nodes (7): Manual-Only Verifications, Per-Task Verification Map, Phase 5 — Validation Strategy, Sampling Rate, Test Infrastructure, Validation Sign-Off, Wave 0 Requirements
+Cohesion: 0.15
+Nodes (12): Manual-Only Verifications, Per-Task Verification Map, Phase 05 — Validation Strategy, Plan 05-01: WABA & Telegram Adapters + Credential Storage, Plan 05-02: WABA Template Management, Plan 05-03: 24h Window & Telegram Webhooks, Plan 05-04: Smart Fallback Router, Requirement Coverage Summary (+4 more)
 
 ### Community 310 - "Community 310"
 Cohesion: 0.25
 Nodes (7): 1. Database Repository (`internal/repository/webhook_dlq.go`), 2. Background Worker (`internal/platform/queue/webhook_worker.go`), 3. Admin Controller (`internal/api/handler/admin/webhook_dlq.go`), 4. Admin UI Page (`templates/pages/webhooks.templ`), Code Analogs and Patterns, File Classification, Phase 6: Webhook Delivery & DLQ - Pattern Mapping
 
 ### Community 311 - "Community 311"
-Cohesion: 0.25
-Nodes (7): Manual-Only Verifications, Per-Task Verification Map, Phase 6 — Validation Strategy, Sampling Rate, Test Infrastructure, Validation Sign-Off, Wave 0 Requirements
+Cohesion: 0.20
+Nodes (9): Manual-Only Verifications, Per-Task Verification Map, Phase 06 — Validation Strategy, Plan 06-01: Webhook Delivery Worker, DLQ, and Admin UI, Requirement Coverage Summary, Sampling Rate, Test Infrastructure, Validation Audit 2026-06-27 (+1 more)
 
 ### Community 312 - "Community 312"
-Cohesion: 0.25
-Nodes (7): Manual-Only Verifications, Per-Task Verification Map, Phase 7 — Validation Strategy, Sampling Rate, Test Infrastructure, Validation Sign-Off, Wave 0 Requirements
+Cohesion: 0.15
+Nodes (12): Manual-Only Verifications, Per-Task Verification Map, Phase 07 — Validation Strategy, Plan 07-01: Media Payload Validation & Storage, Plan 07-02: Media Support in Channel Adapters, Plan 07-03: Inbound Message Ingestion & Deduplication, Plan 07-04: Inbound Webhook Forwarding & Audit Logging, Requirement Coverage Summary (+4 more)
 
 ### Community 313 - "Community 313"
 Cohesion: 0.25
@@ -2547,8 +2553,8 @@ Cohesion: 0.40
 Nodes (4): LIST subcommand, RESUME subcommand, RUN subcommand (default), STATUS subcommand
 
 ### Community 465 - "Community 465"
-Cohesion: 0.50
-Nodes (4): Config, Credentials, CredentialsProvider, Time
+Cohesion: 0.18
+Nodes (14): String(), Config, Credentials, CredentialsProvider, Time, T, T, TestPairingTimeout() (+6 more)
 
 ### Community 466 - "Community 466"
 Cohesion: 0.40
@@ -2659,8 +2665,8 @@ Cohesion: 0.50
 Nodes (3): Phase 7 UAT Verification: Media & Inbound, Test Execution Details, Verification Summary
 
 ### Community 493 - "Community 493"
-Cohesion: 0.50
-Nodes (3): pairingState, RWMutex, Time
+Cohesion: 0.18
+Nodes (10): Community Hubs (Navigation), Corpus Check, God Nodes (most connected - your core abstractions), Graph Freshness, Graph Report - OmniGo  (2026-06-27), Import Cycles, Knowledge Gaps, Suggested Questions (+2 more)
 
 ### Community 494 - "Community 494"
 Cohesion: 0.67
@@ -2787,28 +2793,52 @@ Cohesion: 0.67
 Nodes (3): Applicable ASVS Categories, Known Threat Patterns for Go + PostgreSQL, Security Domain
 
 ### Community 558 - "Community 558"
-Cohesion: 1.33
-Nodes (3): envOrDefault(), Load(), Config
+Cohesion: 0.25
+Nodes (9): Int64, Context, Logger, MessagePayload, S3Client, WhatsAppClient, NewWhatsAppAdapter(), phoneToJID() (+1 more)
+
+### Community 1089 - "Community 1089"
+Cohesion: 0.44
+Nodes (9): T, NewActiveSession(), TestActiveSessionAddGet(), TestActiveSessionAll(), TestActiveSessionConcurrentAccess(), TestActiveSessionRemove(), TestActiveSessionReplace(), TestActiveSessionStopAll() (+1 more)
+
+### Community 1090 - "Community 1090"
+Cohesion: 0.33
+Nodes (6): parseAuditFilters(), AuditHandler, AuditRepository, AuditFilters, Context, WorkspaceRepository
+
+### Community 1091 - "Community 1091"
+Cohesion: 0.25
+Nodes (7): Context, Device, Duration, JID, calcBackoff(), hashBytes(), parseJID()
+
+### Community 1092 - "Community 1092"
+Cohesion: 0.43
+Nodes (7): T, isTerminalWhatsAppError(), TestIsTerminalWhatsAppError(), TestIsTerminalWhatsAppErrorNil(), TestNewWhatsAppAdapter(), TestPhoneToJID(), TestStaggerBounds()
+
+### Community 1093 - "Community 1093"
+Cohesion: 0.33
+Nodes (5): MessageHandler, Publisher, Echo, QueueDepthTracker, S3Client
+
+### Community 1094 - "Community 1094"
+Cohesion: 0.60
+Nodes (4): Conn, T, connectNATS(), TestWhatsAppInbound()
 
 ## Knowledge Gaps
-- **4555 isolated node(s):** `_runtime-launcher.snippet.sh script`, `fs`, `path`, `{ isSemverNewer }`, `{ checkLatestVersion }` (+4550 more)
+- **5107 isolated node(s):** `_runtime-launcher.snippet.sh script`, `fs`, `path`, `{ isSemverNewer }`, `{ checkLatestVersion }` (+5102 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **115 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `New()` connect `Community 12` to `Community 0`, `Community 256`, `Community 130`, `Community 131`, `Community 4`, `Community 3`, `Community 10`, `Community 15`, `Community 25`, `Community 26`, `Community 27`, `Community 29`, `Community 158`, `Community 159`, `Community 425`, `Community 46`, `Community 330`, `Community 79`, `Community 89`, `Community 98`, `Community 99`, `Community 108`, `Community 119`, `Community 120`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **Why does `main()` connect `Community 15` to `Community 0`, `Community 131`, `Community 3`, `Community 10`, `Community 12`, `Community 25`, `Community 26`, `Community 27`, `Community 159`, `Community 39`, `Community 43`, `Community 44`, `Community 558`, `Community 47`, `Community 52`, `Community 53`, `Community 187`, `Community 188`, `Community 65`, `Community 66`, `Community 80`, `Community 89`, `Community 221`, `Community 95`, `Community 99`, `Community 108`, `Community 109`, `Community 119`, `Community 120`, `Community 253`, `Community 255`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Are the 108 inferred relationships involving `New()` (e.g. with `getTestPool()` and `TestWABATemplateHandler()`) actually correct?**
-  _`New()` has 108 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `New()` connect `Community 12` to `Community 0`, `Community 256`, `Community 130`, `Community 131`, `Community 10`, `Community 15`, `Community 25`, `Community 26`, `Community 27`, `Community 29`, `Community 158`, `Community 159`, `Community 425`, `Community 46`, `Community 52`, `Community 1091`, `Community 1092`, `Community 1094`, `Community 330`, `Community 79`, `Community 465`, `Community 89`, `Community 98`, `Community 99`, `Community 108`, `Community 119`, `Community 120`?**
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **Why does `main()` connect `Community 27` to `Community 0`, `Community 131`, `Community 3`, `Community 10`, `Community 12`, `Community 15`, `Community 25`, `Community 26`, `Community 29`, `Community 158`, `Community 159`, `Community 39`, `Community 43`, `Community 44`, `Community 46`, `Community 52`, `Community 187`, `Community 188`, `Community 65`, `Community 66`, `Community 1089`, `Community 89`, `Community 221`, `Community 95`, `Community 99`, `Community 108`, `Community 109`, `Community 119`, `Community 120`, `Community 255`?**
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+- **Why does `Communities (1089 total, 115 thin omitted)` connect `Community 53` to `Community 493`?**
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
+- **Are the 113 inferred relationships involving `New()` (e.g. with `getTestPool()` and `TestWABATemplateHandler()`) actually correct?**
+  _`New()` has 113 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 49 inferred relationships involving `main()` (e.g. with `LoginPage()` and `LoginPost()`) actually correct?**
   _`main()` has 49 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 27 inferred relationships involving `NewWorkspaceRepository()` (e.g. with `TestWABATemplateHandler()` and `TestInboundAuditLogging()`) actually correct?**
   _`NewWorkspaceRepository()` has 27 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 26 inferred relationships involving `Render()` (e.g. with `.ConfirmRevoke()` and `.Generate()`) actually correct?**
   _`Render()` has 26 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 25 inferred relationships involving `String()` (e.g. with `.ExportCSV()` and `.StartPairing()`) actually correct?**
-  _`String()` has 25 INFERRED edges - model-reasoned connections that need verification._

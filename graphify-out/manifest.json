@@ -495,18 +495,18 @@
     "semantic_hash": ""
   },
   "cmd/omnigo/admin_audit_test.go": {
-    "mtime": 1782431090.0501904,
-    "ast_hash": "fbd0c33e44325941a1bacf1f59f1e52c",
+    "mtime": 1782569293.550943,
+    "ast_hash": "23e58bd41226e05f5e9cc3662a01fbbc",
     "semantic_hash": ""
   },
   "cmd/omnigo/admin_test.go": {
-    "mtime": 1782416192.932588,
-    "ast_hash": "70ac53525e756ab5d3e6a5eb0254b72c",
+    "mtime": 1782569478.908924,
+    "ast_hash": "29e46c3f102ece16682e4bf45f5580f6",
     "semantic_hash": ""
   },
   "cmd/omnigo/admin_webhook_dlq_test.go": {
-    "mtime": 1782543836.413916,
-    "ast_hash": "e9b6483f2d7d4985e7642c154ecdf5de",
+    "mtime": 1782569370.9023514,
+    "ast_hash": "3abc7a207f876282605245ca21645f44",
     "semantic_hash": ""
   },
   "cmd/omnigo/admin_workspace_test.go": {
@@ -515,13 +515,13 @@
     "semantic_hash": ""
   },
   "cmd/omnigo/audit_test.go": {
-    "mtime": 1782412562.0779464,
-    "ast_hash": "e491bbd2ac0781d46364f19d19e252f4",
+    "mtime": 1782569229.9606073,
+    "ast_hash": "92bf49f3ba81f3ef82c60b16dd080e3a",
     "semantic_hash": ""
   },
   "cmd/omnigo/auth_test.go": {
-    "mtime": 1782411637.3260226,
-    "ast_hash": "73fd92f7901633abfd882e73b38a3c13",
+    "mtime": 1782569776.6195045,
+    "ast_hash": "2d922819b61f8a53e1ce453ede818bad",
     "semantic_hash": ""
   },
   "cmd/omnigo/main.go": {
@@ -5770,8 +5770,8 @@
     "semantic_hash": ""
   },
   ".planning/phases/05-official-channels-smart-fallback/05-VALIDATION.md": {
-    "mtime": 1782543836.408916,
-    "ast_hash": "7ba245d8a957648fb110af04b2aa5c52",
+    "mtime": 1782570133.556399,
+    "ast_hash": "766d70f7484ae92d0a1afd3677f4f2fa",
     "semantic_hash": ""
   },
   ".planning/phases/05-official-channels-smart-fallback/05-VERIFICATION.md": {
@@ -5815,8 +5815,8 @@
     "semantic_hash": ""
   },
   ".planning/phases/06-webhook-delivery-dlq/06-VALIDATION.md": {
-    "mtime": 1782543836.4102888,
-    "ast_hash": "c3d9f469374b5766f4f90b0a5e7808cb",
+    "mtime": 1782570297.5842698,
+    "ast_hash": "136cbf982ae5ffacc7c4069b27b16fd5",
     "semantic_hash": ""
   },
   ".planning/phases/06-webhook-delivery-dlq/06-VERIFICATION.md": {
@@ -5895,8 +5895,8 @@
     "semantic_hash": ""
   },
   ".planning/phases/07-media-inbound/07-VALIDATION.md": {
-    "mtime": 1782543836.413916,
-    "ast_hash": "441e5789a3c62e53740f53197f55cf70",
+    "mtime": 1782570450.016079,
+    "ast_hash": "39741da2253926b4deb82287fd562cff",
     "semantic_hash": ""
   },
   ".planning/research/ARCHITECTURE.md": {
@@ -5987,6 +5987,26 @@
   ".opencode/gsd-core/references/edge-probe.md": {
     "mtime": 1782372075.923189,
     "ast_hash": "5f544dcc47ae6cfba1045c2a9f06b3c2",
+    "semantic_hash": ""
+  },
+  ".planning/graphs/.last-build-snapshot.json": {
+    "mtime": 1782544975.8923156,
+    "ast_hash": "200275f26119685fd4fab1af1222a65f",
+    "semantic_hash": ""
+  },
+  ".planning/graphs/graph.json": {
+    "mtime": 1782544975.1753113,
+    "ast_hash": "3e37b1343f084b94fb790823a9cc6529",
+    "semantic_hash": ""
+  },
+  ".planning/graphs/GRAPH_REPORT.md": {
+    "mtime": 1782544975.179661,
+    "ast_hash": "477ab4fae0afa24102c46766b2fe8868",
+    "semantic_hash": ""
+  },
+  ".planning/phases/04-whatsapp-web-qr-pairing/04-VALIDATION.md": {
+    "mtime": 1782569964.4735017,
+    "ast_hash": "ff6bce9a873e64468dc5a31b32b6aa13",
     "semantic_hash": ""
   }
 }
