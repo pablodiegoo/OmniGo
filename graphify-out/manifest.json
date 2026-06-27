@@ -495,8 +495,8 @@
     "semantic_hash": ""
   },
   "cmd/omnigo/admin_audit_test.go": {
-    "mtime": 1782569293.550943,
-    "ast_hash": "23e58bd41226e05f5e9cc3662a01fbbc",
+    "mtime": 1782575155.2755075,
+    "ast_hash": "7973b2201076a61038fef8845461baf8",
     "semantic_hash": ""
   },
   "cmd/omnigo/admin_test.go": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "cmd/omnigo/main.go": {
-    "mtime": 1782543836.414916,
-    "ast_hash": "168eaf659dd12d4bb3bd0b2fbd545e80",
+    "mtime": 1782574856.4138503,
+    "ast_hash": "158f41e7eea89c2fb5e5876b8ac3ad2c",
     "semantic_hash": ""
   },
   "cmd/omnigo/main_test.go": {
@@ -720,23 +720,23 @@
     "semantic_hash": ""
   },
   "internal/channel/whatsapp/client.go": {
-    "mtime": 1782543836.4269161,
-    "ast_hash": "e12c608f822c6b1b31b7ef8988cf91fe",
+    "mtime": 1782574777.9074152,
+    "ast_hash": "941e256c43f81ab558c6971db12eb7da",
     "semantic_hash": ""
   },
   "internal/channel/whatsapp/waba.go": {
-    "mtime": 1782543836.4269161,
-    "ast_hash": "9518986dab445e643275255b81cd766e",
+    "mtime": 1782574726.6861312,
+    "ast_hash": "3ae3c69b2b96c65ae0cb6d7569244668",
     "semantic_hash": ""
   },
   "internal/channel/whatsapp/waba_test.go": {
-    "mtime": 1782543836.4269161,
-    "ast_hash": "6a7673821478bd7a9eb71da7125dfbc7",
+    "mtime": 1782574763.3103342,
+    "ast_hash": "f7b4f9d807f1c7cb30f2923b1ca40756",
     "semantic_hash": ""
   },
   "internal/config/config.go": {
-    "mtime": 1782543836.427916,
-    "ast_hash": "d43ed7911398fe30f9fcbb532802a3b4",
+    "mtime": 1782574695.2359567,
+    "ast_hash": "697cc4f5c8c309078cfe4cb0e21dedf0",
     "semantic_hash": ""
   },
   "internal/domain/message.go": {
@@ -770,8 +770,8 @@
     "semantic_hash": ""
   },
   "internal/platform/audit/batch.go": {
-    "mtime": 1782412389.2460265,
-    "ast_hash": "e36f473f19d9e50b17165bcfefba1367",
+    "mtime": 1782575104.6313295,
+    "ast_hash": "b51f7c1754fb8eae5612896c9a885881",
     "semantic_hash": ""
   },
   "internal/platform/audit/event.go": {
@@ -890,13 +890,13 @@
     "semantic_hash": ""
   },
   "internal/platform/queue/worker.go": {
-    "mtime": 1782543836.434916,
-    "ast_hash": "8e27e5b62c2c81bfabb3ba09ac83c65b",
+    "mtime": 1782574651.1437123,
+    "ast_hash": "8b807d8b3773f033c36a91db5c9c2f87",
     "semantic_hash": ""
   },
   "internal/platform/queue/worker_test.go": {
-    "mtime": 1782543836.4359162,
-    "ast_hash": "af7e8e57e2bc0caf330486759bd032c0",
+    "mtime": 1782574683.5028918,
+    "ast_hash": "1ee2497d7e346c4d127da4fb4907a6bc",
     "semantic_hash": ""
   },
   "internal/platform/shutdown/orchestrator.go": {
@@ -980,8 +980,8 @@
     "semantic_hash": ""
   },
   "internal/session/device.go": {
-    "mtime": 1782475754.8426611,
-    "ast_hash": "e9f8ad06ff830309c7f6c9e51ba35c3d",
+    "mtime": 1782574789.1954777,
+    "ast_hash": "e7905ea6a06b9e978e9dd7dbf3ff3961",
     "semantic_hash": ""
   },
   "internal/session/device_test.go": {
@@ -995,8 +995,8 @@
     "semantic_hash": ""
   },
   "internal/session/manager.go": {
-    "mtime": 1782543836.4389162,
-    "ast_hash": "4ed06f246a5f3af0f926d9f5f2df9492",
+    "mtime": 1782574784.3504508,
+    "ast_hash": "2cde9db77b43ae72a10723a202d174c5",
     "semantic_hash": ""
   },
   "internal/session/qr.go": {
@@ -5510,18 +5510,18 @@
     "semantic_hash": ""
   },
   ".planning/REQUIREMENTS.md": {
-    "mtime": 1782543836.403916,
-    "ast_hash": "8eb1df9857f1b01de36d0c36d8c6e9c4",
+    "mtime": 1782575725.9616697,
+    "ast_hash": "4a6d3e5760220f2b5e60bcaa6d93c1b2",
     "semantic_hash": ""
   },
   ".planning/ROADMAP.md": {
-    "mtime": 1782543836.404916,
-    "ast_hash": "5ccd88e5864b6417764db6caeb3b3efa",
+    "mtime": 1782573861.956416,
+    "ast_hash": "73e61ab3cef357afc2faedf524cd4b76",
     "semantic_hash": ""
   },
   ".planning/STATE.md": {
-    "mtime": 1782543836.404916,
-    "ast_hash": "db6cbb5233bcf0bca31ba3833c864f62",
+    "mtime": 1782575269.0461383,
+    "ast_hash": "d10a464e1f399e64f0e5d95fb6a3d778",
     "semantic_hash": ""
   },
   ".planning/phases/01-Foundation/01-01-PLAN.md": {
@@ -5990,23 +5990,93 @@
     "semantic_hash": ""
   },
   ".planning/graphs/.last-build-snapshot.json": {
-    "mtime": 1782544975.8923156,
-    "ast_hash": "200275f26119685fd4fab1af1222a65f",
+    "mtime": 1782570961.5407965,
+    "ast_hash": "14dce1308fde5958c4ac3de317524de1",
     "semantic_hash": ""
   },
   ".planning/graphs/graph.json": {
-    "mtime": 1782544975.1753113,
-    "ast_hash": "3e37b1343f084b94fb790823a9cc6529",
+    "mtime": 1782570960.7727926,
+    "ast_hash": "8a98e2dd3710034d4c254a5a1e91e236",
     "semantic_hash": ""
   },
   ".planning/graphs/GRAPH_REPORT.md": {
-    "mtime": 1782544975.179661,
-    "ast_hash": "477ab4fae0afa24102c46766b2fe8868",
+    "mtime": 1782570960.7815742,
+    "ast_hash": "2091578a38804a282bfdb14deecfed2d",
     "semantic_hash": ""
   },
   ".planning/phases/04-whatsapp-web-qr-pairing/04-VALIDATION.md": {
     "mtime": 1782569964.4735017,
     "ast_hash": "ff6bce9a873e64468dc5a31b32b6aa13",
+    "semantic_hash": ""
+  },
+  "internal/platform/postgres/migrations/010_fix_audit_partitioning.sql": {
+    "mtime": 1782574970.6274836,
+    "ast_hash": "b6efe513614ed4c2fec94e95efa431c4",
+    "semantic_hash": ""
+  },
+  "internal/platform/postgres/migrations/011_encrypt_whatsmeow_device.sql": {
+    "mtime": 1782574601.8134387,
+    "ast_hash": "b79c8fbf18d2dcba750186692dbe3baa",
+    "semantic_hash": ""
+  },
+  "internal/session/device_repository_test.go": {
+    "mtime": 1782574824.931676,
+    "ast_hash": "4db671cbda320187fb8a854d8edba5ab",
+    "semantic_hash": ""
+  },
+  ".planning/MILESTONES.md": {
+    "mtime": 1782575269.0181382,
+    "ast_hash": "c2a38660b09feb13adef13c60e7594cc",
+    "semantic_hash": ""
+  },
+  ".planning/milestones/v1.0-MILESTONE-AUDIT.md": {
+    "mtime": 1782570990.8299522,
+    "ast_hash": "1ebfe9ac50a44ebf7930d292edf8693a",
+    "semantic_hash": ""
+  },
+  ".planning/milestones/v1.0-REQUIREMENTS.md": {
+    "mtime": 1782575269.0171382,
+    "ast_hash": "6a78985bf191fdd2a2d3e8aeb2e57f71",
+    "semantic_hash": ""
+  },
+  ".planning/milestones/v1.0-ROADMAP.md": {
+    "mtime": 1782575269.016138,
+    "ast_hash": "73e61ab3cef357afc2faedf524cd4b76",
+    "semantic_hash": ""
+  },
+  ".planning/phases/07-media-inbound/07-VERIFICATION.md": {
+    "mtime": 1782574173.005104,
+    "ast_hash": "29ccd25e71341043760c719fa1ea0aa8",
+    "semantic_hash": ""
+  },
+  ".planning/phases/07.1-close-gap-v1-0-audit-gaps/07.1-01-PLAN.md": {
+    "mtime": 1782574553.8521729,
+    "ast_hash": "53c28c50dae639cb303b2b4bc4fcb159",
+    "semantic_hash": ""
+  },
+  ".planning/phases/07.1-close-gap-v1-0-audit-gaps/07.1-01-SUMMARY.md": {
+    "mtime": 1782575203.1407728,
+    "ast_hash": "a658dd4f033353408114bc7c4cb204a9",
+    "semantic_hash": ""
+  },
+  ".planning/phases/07.1-close-gap-v1-0-audit-gaps/07.1-CONTEXT.md": {
+    "mtime": 1782574193.283214,
+    "ast_hash": "5404ee837627594f6a761497dfd48736",
+    "semantic_hash": ""
+  },
+  ".planning/phases/07.1-close-gap-v1-0-audit-gaps/07.1-VALIDATION.md": {
+    "mtime": 1782574559.290203,
+    "ast_hash": "24d2d10cab6e2c63f25e0b88c53383e9",
+    "semantic_hash": ""
+  },
+  ".planning/phases/07.1-close-gap-v1-0-audit-gaps/07.1-VERIFICATION.md": {
+    "mtime": 1782575235.0449498,
+    "ast_hash": "1026ddc983ccb331165ec5685002eccb",
+    "semantic_hash": ""
+  },
+  ".planning/v1.0-MILESTONE-AUDIT.md": {
+    "mtime": 1782575732.1661594,
+    "ast_hash": "b2f5c022b4534f36a97f2d428e705400",
     "semantic_hash": ""
   }
 }
