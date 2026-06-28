@@ -276,7 +276,7 @@ func main() {
 		return admin.LoginPage(c, false)
 	})
 	adminPublic.POST("/login", func(c *echo.Context) error {
-		return admin.LoginPost(c, wsRepo)
+		return admin.LoginPost(c, wsRepo, cfg.AdminPassword)
 	})
 	adminPublic.POST("/logout", func(c *echo.Context) error {
 		return admin.Logout(c)

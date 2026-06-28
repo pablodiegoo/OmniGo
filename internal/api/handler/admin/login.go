@@ -2,7 +2,6 @@ package admin
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v5"
 
@@ -23,9 +22,8 @@ func LoginPage(c *echo.Context, showError bool) error {
 }
 
 // LoginPost handles the login form submission.
-func LoginPost(c *echo.Context, wsRepo *repository.WorkspaceRepository) error {
+func LoginPost(c *echo.Context, wsRepo *repository.WorkspaceRepository, adminPassword string) error {
 	password := c.FormValue("password")
-	adminPassword := os.Getenv("OMNIGO_ADMIN_PASSWORD")
 
 	if password != adminPassword {
 		login := pages.Login("Invalid password")

@@ -8,12 +8,13 @@ import (
 
 // Config holds all configuration for the OmniGo server.
 type Config struct {
-	DatabaseURL string
-	NATSUrl     string
-	ServerPort  string
-	DebugPort   string
-	KEKBase64   string
-	KEKBytes    []byte // decoded from KEKBase64
+	DatabaseURL   string
+	NATSUrl       string
+	ServerPort    string
+	DebugPort     string
+	KEKBase64     string
+	KEKBytes      []byte // decoded from KEKBase64
+	AdminPassword string
 	S3Endpoint     string
 	S3Bucket       string
 	S3AccessKey    string
@@ -26,11 +27,12 @@ type Config struct {
 // Load reads configuration from environment variables with sensible defaults.
 func Load() *Config {
 	cfg := &Config{
-		DatabaseURL: envOrDefault("OMNIGO_DATABASE_URL", "postgres://postgres:postgres@localhost:5432/omnigo?sslmode=disable"),
-		NATSUrl:     envOrDefault("OMNIGO_NATS_URL", "nats://localhost:4222"),
-		ServerPort:  envOrDefault("OMNIGO_SERVER_PORT", "8080"),
-		DebugPort:   envOrDefault("OMNIGO_DEBUG_PORT", "6060"),
-		KEKBase64:   os.Getenv("OMNIGO_KEK_BASE64"),
+		DatabaseURL:   envOrDefault("OMNIGO_DATABASE_URL", "postgres://postgres:postgres@localhost:5432/omnigo?sslmode=disable"),
+		NATSUrl:       envOrDefault("OMNIGO_NATS_URL", "nats://localhost:4222"),
+		ServerPort:    envOrDefault("OMNIGO_SERVER_PORT", "8080"),
+		DebugPort:     envOrDefault("OMNIGO_DEBUG_PORT", "6060"),
+		KEKBase64:     os.Getenv("OMNIGO_KEK_BASE64"),
+		AdminPassword: os.Getenv("OMNIGO_ADMIN_PASSWORD"),
 		S3Endpoint:     envOrDefault("OMNIGO_S3_ENDPOINT", envOrDefault("S3_ENDPOINT", "")),
 		S3Bucket:       envOrDefault("OMNIGO_S3_BUCKET", envOrDefault("S3_BUCKET", "")),
 		S3AccessKey:    envOrDefault("OMNIGO_S3_ACCESS_KEY", envOrDefault("S3_ACCESS_KEY", "")),
