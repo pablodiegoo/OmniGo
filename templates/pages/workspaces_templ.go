@@ -355,11 +355,11 @@ func WorkspaceDetailContent(ws repository.Workspace, keys []repository.APIKey, w
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = WABACredentialsCard(ws.ID.String(), waba).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = WABACredentialsCard(ws.ID.String(), waba, "").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = TelegramCredentialsCard(ws.ID.String(), tg).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = TelegramCredentialsCard(ws.ID.String(), tg, "").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -434,7 +434,7 @@ func WorkspaceDeleteConfirm(ws repository.Workspace) templ.Component {
 	})
 }
 
-func WABACredentialsCard(workspaceID string, config WABAConfig) templ.Component {
+func WABACredentialsCard(workspaceID string, config WABAConfig, errStr string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -459,83 +459,128 @@ func WABACredentialsCard(workspaceID string, config WABAConfig) templ.Component 
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if config.Token != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<dl class=\"detail-list\" style=\"margin-bottom: 1rem;\"><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">Phone Number ID</dt><dd style=\"margin-bottom: 0.5rem; font-family: monospace;\">")
+		if errStr != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"alert alert-error\" style=\"margin-bottom: 1rem; background: #fef2f2; border: 1px solid #fecaca; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius); color: var(--color-error); font-size: 0.875rem;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var20 string
-			templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(config.PhoneNumberID)
+			templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 206, Col: 86}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 205, Col: 13}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</dd><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">WABA Account ID</dt><dd style=\"margin-bottom: 0.5rem; font-family: monospace;\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if config.Token != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<dl class=\"detail-list\" style=\"margin-bottom: 1rem;\"><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">Phone Number ID</dt><dd style=\"margin-bottom: 0.5rem; font-family: monospace;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var21 string
-			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(config.WABAAccountID)
+			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(config.PhoneNumberID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 208, Col: 86}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 211, Col: 86}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</dd><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">API Token</dt><dd style=\"font-family: monospace;\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</dd><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">WABA Account ID</dt><dd style=\"margin-bottom: 0.5rem; font-family: monospace;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var22 string
-			templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(maskToken(config.Token))
+			templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(config.WABAAccountID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 210, Col: 66}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 213, Col: 86}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</dd></dl><button class=\"btn btn-danger btn-sm\" hx-delete=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</dd><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">API Token</dt><dd style=\"font-family: monospace;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var23 string
-			templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/whatsapp_cloud", workspaceID))
+			templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(maskToken(config.Token))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 214, Col: 92}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 215, Col: 66}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var23)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\" hx-target=\"#waba-credentials-card\" hx-swap=\"outerHTML\" hx-confirm=\"Are you sure you want to revoke WhatsApp Cloud credentials?\">Revoke</button>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<p style=\"color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1rem;\">No credentials configured.</p><form hx-post=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</dd></dl><button class=\"btn btn-danger btn-sm\" hx-delete=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var24 string
 			templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/whatsapp_cloud", workspaceID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 224, Col: 90}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 219, Col: 92}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var24)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" hx-target=\"#waba-credentials-card\" hx-swap=\"outerHTML\"><div class=\"form-group\"><label for=\"waba_phone_number_id\">Phone Number ID</label> <input type=\"text\" id=\"waba_phone_number_id\" name=\"phone_number_id\" required class=\"form-input\"></div><div class=\"form-group\"><label for=\"waba_account_id\">WABA Account ID</label> <input type=\"text\" id=\"waba_account_id\" name=\"waba_account_id\" required class=\"form-input\"></div><div class=\"form-group\"><label for=\"waba_token\">Meta API Token</label> <input type=\"password\" id=\"waba_token\" name=\"token\" required class=\"form-input\"></div><button type=\"submit\" class=\"btn btn-primary btn-sm\">Configure WABA</button></form>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" hx-target=\"#waba-credentials-card\" hx-swap=\"outerHTML\" hx-confirm=\"Are you sure you want to revoke WhatsApp Cloud credentials?\">Revoke</button>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<p style=\"color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1rem;\">No credentials configured.</p><form hx-post=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var25 string
+			templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/whatsapp_cloud", workspaceID))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 229, Col: 90}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var25)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" hx-target=\"#waba-credentials-card\" hx-swap=\"outerHTML\"><div class=\"form-group\"><label for=\"waba_phone_number_id\">Phone Number ID</label> <input type=\"text\" id=\"waba_phone_number_id\" name=\"phone_number_id\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var26 string
+			templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.ResolveAttributeValue(config.PhoneNumberID)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 235, Col: 102}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var26)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" required class=\"form-input\"></div><div class=\"form-group\"><label for=\"waba_account_id\">WABA Account ID</label> <input type=\"text\" id=\"waba_account_id\" name=\"waba_account_id\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var27 string
+			templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.ResolveAttributeValue(config.WABAAccountID)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 239, Col: 97}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var27)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "\" required class=\"form-input\"></div><div class=\"form-group\"><label for=\"waba_token\">Meta API Token</label> <input type=\"password\" id=\"waba_token\" name=\"token\" required class=\"form-input\"></div><button type=\"submit\" class=\"btn btn-primary btn-sm\">Configure WABA</button></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -543,7 +588,7 @@ func WABACredentialsCard(workspaceID string, config WABAConfig) templ.Component 
 	})
 }
 
-func TelegramCredentialsCard(workspaceID string, config TelegramConfig) templ.Component {
+func TelegramCredentialsCard(workspaceID string, config TelegramConfig, errStr string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -559,66 +604,85 @@ func TelegramCredentialsCard(workspaceID string, config TelegramConfig) templ.Co
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var25 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var25 == nil {
-			templ_7745c5c3_Var25 = templ.NopComponent
+		templ_7745c5c3_Var28 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var28 == nil {
+			templ_7745c5c3_Var28 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<div id=\"telegram-credentials-card\" class=\"stat-card\" style=\"flex: 1;\"><h3>Telegram Bot</h3><div style=\"margin-top: 1rem;\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "<div id=\"telegram-credentials-card\" class=\"stat-card\" style=\"flex: 1;\"><h3>Telegram Bot</h3><div style=\"margin-top: 1rem;\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+		if errStr != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<div class=\"alert alert-error\" style=\"margin-bottom: 1rem; background: #fef2f2; border: 1px solid #fecaca; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius); color: var(--color-error); font-size: 0.875rem;\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var29 string
+			templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 258, Col: 13}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
 		if config.Token != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<dl class=\"detail-list\" style=\"margin-bottom: 1rem;\"><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">Bot Token</dt><dd style=\"font-family: monospace;\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<dl class=\"detail-list\" style=\"margin-bottom: 1rem;\"><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">Bot Token</dt><dd style=\"font-family: monospace;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var26 string
-			templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(maskToken(config.Token))
+			var templ_7745c5c3_Var30 string
+			templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(maskToken(config.Token))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 254, Col: 66}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 264, Col: 66}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</dd></dl><button class=\"btn btn-danger btn-sm\" hx-delete=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var27 string
-			templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/telegram", workspaceID))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 258, Col: 86}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var27)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</dd></dl><button class=\"btn btn-danger btn-sm\" hx-delete=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "\" hx-target=\"#telegram-credentials-card\" hx-swap=\"outerHTML\" hx-confirm=\"Are you sure you want to revoke Telegram credentials?\">Revoke</button>")
+			var templ_7745c5c3_Var31 string
+			templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/telegram", workspaceID))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 268, Col: 86}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var31)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "\" hx-target=\"#telegram-credentials-card\" hx-swap=\"outerHTML\" hx-confirm=\"Are you sure you want to revoke Telegram credentials?\">Revoke</button>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "<p style=\"color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1rem;\">No credentials configured.</p><form hx-post=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<p style=\"color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1rem;\">No credentials configured.</p><form hx-post=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var28 string
-			templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/telegram", workspaceID))
+			var templ_7745c5c3_Var32 string
+			templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/telegram", workspaceID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 268, Col: 84}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 278, Col: 84}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var28)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var32)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "\" hx-target=\"#telegram-credentials-card\" hx-swap=\"outerHTML\"><div class=\"form-group\"><label for=\"tg_token\">Bot Token</label> <input type=\"password\" id=\"tg_token\" name=\"token\" required class=\"form-input\"></div><button type=\"submit\" class=\"btn btn-primary btn-sm\">Configure Telegram</button></form>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "\" hx-target=\"#telegram-credentials-card\" hx-swap=\"outerHTML\"><div class=\"form-group\"><label for=\"tg_token\">Bot Token</label> <input type=\"password\" id=\"tg_token\" name=\"token\" required class=\"form-input\"></div><button type=\"submit\" class=\"btn btn-primary btn-sm\">Configure Telegram</button></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

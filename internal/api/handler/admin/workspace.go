@@ -151,16 +151,28 @@ func (h *WorkspaceHandler) SaveCredentials(c *echo.Context) error {
 	}
 
 	var payload []byte
+	var waba pages.WABAConfig
+	var tg pages.TelegramConfig
+
 	if channel == "whatsapp_cloud" {
-		payload, err = json.Marshal(pages.WABAConfig{
+		waba = pages.WABAConfig{
 			PhoneNumberID: c.FormValue("phone_number_id"),
 			Token:         c.FormValue("token"),
 			WABAAccountID: c.FormValue("waba_account_id"),
-		})
+		}
+		// Validate credentials synchronously by running template sync
+		err = h.syncTemplatesFromMeta(c.Request().Context(), workspaceID, waba)
+		if err != nil {
+			slog.Warn("WABA credentials validation failed", "error", err, "workspace_id", workspaceID)
+			waba.Token = "" // Clear token to render the form again
+			return mw.Render(c, http.StatusOK, pages.WABACredentialsCard(idStr, waba, err.Error()))
+		}
+		payload, err = json.Marshal(waba)
 	} else {
-		payload, err = json.Marshal(pages.TelegramConfig{
+		tg = pages.TelegramConfig{
 			Token: c.FormValue("token"),
-		})
+		}
+		payload, err = json.Marshal(tg)
 	}
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "failed to marshal credentials")
@@ -171,46 +183,47 @@ func (h *WorkspaceHandler) SaveCredentials(c *echo.Context) error {
 	}
 
 	if channel == "whatsapp_cloud" {
-		var waba pages.WABAConfig
-		_ = json.Unmarshal(payload, &waba)
-		// Run sync in background so HTTP response is returned immediately
-		go h.syncTemplatesFromMeta(context.Background(), workspaceID, waba)
-		return mw.Render(c, http.StatusOK, pages.WABACredentialsCard(idStr, waba))
+		return mw.Render(c, http.StatusOK, pages.WABACredentialsCard(idStr, waba, ""))
 	} else {
-		var tg pages.TelegramConfig
-		_ = json.Unmarshal(payload, &tg)
-		return mw.Render(c, http.StatusOK, pages.TelegramCredentialsCard(idStr, tg))
+		return mw.Render(c, http.StatusOK, pages.TelegramCredentialsCard(idStr, tg, ""))
 	}
 }
 
-func (h *WorkspaceHandler) syncTemplatesFromMeta(ctx context.Context, workspaceID uuid.UUID, config pages.WABAConfig) {
+func (h *WorkspaceHandler) syncTemplatesFromMeta(ctx context.Context, workspaceID uuid.UUID, config pages.WABAConfig) error {
 	baseURL := "https://graph.facebook.com/v18.0"
 	metaURL := fmt.Sprintf("%s/%s/message_templates?limit=100", baseURL, config.WABAAccountID)
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, metaURL, nil)
 	if err != nil {
-		slog.Error("failed to create meta sync request", "error", err, "workspace_id", workspaceID)
-		return
+		return fmt.Errorf("failed to create Meta API request: %w", err)
 	}
 	req.Header.Set("Authorization", "Bearer "+config.Token)
 
 	resp, err := client.Do(req)
 	if err != nil {
-		slog.Error("failed to fetch meta templates", "error", err, "workspace_id", workspaceID)
-		return
+		return fmt.Errorf("failed to connect to Meta API: %w", err)
 	}
 	defer resp.Body.Close()
 
 	respBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		slog.Error("failed to read meta templates response", "error", err, "workspace_id", workspaceID)
-		return
+		return fmt.Errorf("failed to read response from Meta: %w", err)
 	}
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		slog.Error("meta templates api error status", "status", resp.StatusCode, "body", string(respBytes), "workspace_id", workspaceID)
-		return
+		type metaError struct {
+			Message string `json:"message"`
+			Code    int    `json:"code"`
+		}
+		type metaErrorResponse struct {
+			Error metaError `json:"error"`
+		}
+		var metaErr metaErrorResponse
+		if err := json.Unmarshal(respBytes, &metaErr); err == nil && metaErr.Error.Message != "" {
+			return fmt.Errorf("Meta API error: %s (code %d)", metaErr.Error.Message, metaErr.Error.Code)
+		}
+		return fmt.Errorf("Meta API returned HTTP status %d", resp.StatusCode)
 	}
 
 	type metaTemplate struct {
@@ -228,8 +241,7 @@ func (h *WorkspaceHandler) syncTemplatesFromMeta(ctx context.Context, workspaceI
 
 	var metaResp metaTemplatesResponse
 	if err := json.Unmarshal(respBytes, &metaResp); err != nil {
-		slog.Error("failed to unmarshal meta templates", "error", err, "workspace_id", workspaceID)
-		return
+		return fmt.Errorf("failed to parse Meta response: %w", err)
 	}
 
 	slog.Info("syncing templates from Meta", "count", len(metaResp.Data), "workspace_id", workspaceID)
@@ -258,6 +270,7 @@ func (h *WorkspaceHandler) syncTemplatesFromMeta(ctx context.Context, workspaceI
 			}
 		}
 	}
+	return nil
 }
 
 // DeleteCredentials revokes channel credentials.
@@ -284,9 +297,9 @@ func (h *WorkspaceHandler) DeleteCredentials(c *echo.Context) error {
 	}
 
 	if channel == "whatsapp_cloud" {
-		return mw.Render(c, http.StatusOK, pages.WABACredentialsCard(idStr, pages.WABAConfig{}))
+		return mw.Render(c, http.StatusOK, pages.WABACredentialsCard(idStr, pages.WABAConfig{}, ""))
 	} else {
-		return mw.Render(c, http.StatusOK, pages.TelegramCredentialsCard(idStr, pages.TelegramConfig{}))
+		return mw.Render(c, http.StatusOK, pages.TelegramCredentialsCard(idStr, pages.TelegramConfig{}, ""))
 	}
 }
 
