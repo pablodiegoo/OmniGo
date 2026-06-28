@@ -301,7 +301,12 @@ func main() {
 	adminGroup.GET("/", dashboardHandler.Index)
 
 	// Workspace management routes
-	workspaceHandler := &admin.WorkspaceHandler{Repo: wsRepo, APIKeys: apiKeyRepo, Credentials: credentialsRepo}
+	workspaceHandler := &admin.WorkspaceHandler{
+		Repo:        wsRepo,
+		APIKeys:     apiKeyRepo,
+		Credentials: credentialsRepo,
+		Templates:   wabaTemplateRepo,
+	}
 	adminGroup.GET("/workspaces", workspaceHandler.List)
 	adminGroup.POST("/workspaces", workspaceHandler.Create)
 	adminGroup.GET("/workspaces/new", func(c *echo.Context) error {

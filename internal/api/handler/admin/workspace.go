@@ -1,8 +1,13 @@
 package admin
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
+	"io"
+	"log/slog"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v5"
@@ -17,6 +22,7 @@ type WorkspaceHandler struct {
 	Repo        *repository.WorkspaceRepository
 	APIKeys     *repository.APIKeyRepository
 	Credentials *repository.CredentialsRepository
+	Templates   *repository.WABATemplateRepository
 }
 
 // List renders the workspace list page or HTMX fragment.
@@ -167,11 +173,90 @@ func (h *WorkspaceHandler) SaveCredentials(c *echo.Context) error {
 	if channel == "whatsapp_cloud" {
 		var waba pages.WABAConfig
 		_ = json.Unmarshal(payload, &waba)
+		// Run sync in background so HTTP response is returned immediately
+		go h.syncTemplatesFromMeta(context.Background(), workspaceID, waba)
 		return mw.Render(c, http.StatusOK, pages.WABACredentialsCard(idStr, waba))
 	} else {
 		var tg pages.TelegramConfig
 		_ = json.Unmarshal(payload, &tg)
 		return mw.Render(c, http.StatusOK, pages.TelegramCredentialsCard(idStr, tg))
+	}
+}
+
+func (h *WorkspaceHandler) syncTemplatesFromMeta(ctx context.Context, workspaceID uuid.UUID, config pages.WABAConfig) {
+	baseURL := "https://graph.facebook.com/v18.0"
+	metaURL := fmt.Sprintf("%s/%s/message_templates?limit=100", baseURL, config.WABAAccountID)
+
+	client := &http.Client{Timeout: 10 * time.Second}
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, metaURL, nil)
+	if err != nil {
+		slog.Error("failed to create meta sync request", "error", err, "workspace_id", workspaceID)
+		return
+	}
+	req.Header.Set("Authorization", "Bearer "+config.Token)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		slog.Error("failed to fetch meta templates", "error", err, "workspace_id", workspaceID)
+		return
+	}
+	defer resp.Body.Close()
+
+	respBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		slog.Error("failed to read meta templates response", "error", err, "workspace_id", workspaceID)
+		return
+	}
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		slog.Error("meta templates api error status", "status", resp.StatusCode, "body", string(respBytes), "workspace_id", workspaceID)
+		return
+	}
+
+	type metaTemplate struct {
+		ID         string            `json:"id"`
+		Name       string            `json:"name"`
+		Language   string            `json:"language"`
+		Status     string            `json:"status"`
+		Category   string            `json:"category"`
+		Components []json.RawMessage `json:"components"`
+	}
+
+	type metaTemplatesResponse struct {
+		Data []metaTemplate `json:"data"`
+	}
+
+	var metaResp metaTemplatesResponse
+	if err := json.Unmarshal(respBytes, &metaResp); err != nil {
+		slog.Error("failed to unmarshal meta templates", "error", err, "workspace_id", workspaceID)
+		return
+	}
+
+	slog.Info("syncing templates from Meta", "count", len(metaResp.Data), "workspace_id", workspaceID)
+
+	for _, t := range metaResp.Data {
+		componentsJSON, err := json.Marshal(t.Components)
+		if err != nil {
+			slog.Error("failed to marshal components", "error", err, "template", t.Name)
+			continue
+		}
+
+		dbTmpl := &repository.WABATemplate{
+			WorkspaceID:    workspaceID,
+			MetaTemplateID: t.ID,
+			Name:           t.Name,
+			Language:       t.Language,
+			Status:         t.Status,
+			Category:       t.Category,
+			Components:     componentsJSON,
+		}
+
+		if h.Templates != nil {
+			_, err = h.Templates.Upsert(ctx, dbTmpl)
+			if err != nil {
+				slog.Error("failed to upsert template in local DB", "error", err, "template", t.Name)
+			}
+		}
 	}
 }
 
