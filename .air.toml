@@ -1,0 +1,30 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  # Comando completo: gera os arquivos templ antes de compilar
+  pre_cmd = ["templ generate ./..."]
+  cmd = "go build -o ./tmp/omnigo ./cmd/omnigo"
+  bin = "./tmp/omnigo"
+  delay = 500
+  exclude_dir = [
+    "tmp", "vendor", ".planning", ".agents",
+    "templates/*_templ.go"  # gerados pelo pre_cmd, não fonte
+  ]
+  include_ext = ["go", "templ"]
+  exclude_regex = ["_templ\\.go$"]
+  kill_delay = "2s"
+  rerun = false
+
+[log]
+  time = false
+  main_only = true
+
+[color]
+  main = "magenta"
+  watcher = "cyan"
+  build = "yellow"
+  runner = "green"
+
+[misc]
+  clean_on_exit = true

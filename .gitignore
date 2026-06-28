@@ -30,3 +30,4 @@ go.work.sum
 # Local SQLite databases (if any are generated in the future)
 *.db
 *.sqlite
+tmp/
