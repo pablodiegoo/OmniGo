@@ -378,6 +378,12 @@ func main() {
 	adminGroup.POST("/workspaces/:workspace_id/webhooks/config", webhookHandler.SaveConfig)
 	adminGroup.DELETE("/workspaces/:workspace_id/webhooks/config", webhookHandler.DeleteConfig)
 
+	// Developer Playground
+	playgroundHandler := admin.NewPlaygroundHandler(wsRepo, publisher, nc)
+	adminGroup.GET("/playground", playgroundHandler.Page)
+	adminGroup.POST("/playground/send", playgroundHandler.Send)
+	adminGroup.GET("/playground/ws", playgroundHandler.WS)
+
 	// Static files
 	e.Static("/static", "static")
 

@@ -27,6 +27,9 @@ templ Sidebar() {
 					<span id="sidebar-dlq-badge" hx-get="/admin/webhooks/dlq/badge" hx-trigger="load, every 10s" hx-swap="outerHTML"></span>
 				</a>
 			</li>
+			<li>
+				<a href="/admin/playground" class="nav-item">Playground</a>
+			</li>
 		</ul>
 		<div class="sidebar-footer">
 			<form method="POST" action="/admin/logout">

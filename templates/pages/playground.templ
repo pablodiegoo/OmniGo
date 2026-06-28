@@ -1,0 +1,235 @@
+package pages
+
+import (
+	"github.com/pablojhp.omnigo/internal/repository"
+	"github.com/pablojhp.omnigo/templates/layout"
+)
+
+// PlaygroundPage renders the main playground page.
+templ PlaygroundPage(workspaces []repository.Workspace) {
+	@layout.Base("Developer Playground", PlaygroundContent(workspaces))
+}
+
+// PlaygroundContent renders the main playground workspace layout.
+templ PlaygroundContent(workspaces []repository.Workspace) {
+	<script src="https://unpkg.com/htmx-ext-ws@2.0.1/ws.js"></script>
+	<style>
+		.playground-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: var(--spacing-xl);
+			align-items: start;
+		}
+		.playground-panel {
+			background: var(--color-surface);
+			padding: var(--spacing-lg);
+			border-radius: var(--radius);
+			box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.025);
+			border: 1px solid var(--color-border);
+		}
+		.playground-panel h2 {
+			font-size: 1.25rem;
+			font-weight: 600;
+			margin-bottom: var(--spacing-md);
+			color: var(--color-text);
+			display: flex;
+			align-items: center;
+			gap: var(--spacing-sm);
+		}
+		.ws-status-bar {
+			display: flex;
+			align-items: center;
+			gap: var(--spacing-xs);
+			font-size: 0.875rem;
+			color: var(--color-text-muted);
+			margin-bottom: var(--spacing-md);
+			padding: var(--spacing-sm) var(--spacing-md);
+			background: #f1f5f9;
+			border-radius: var(--radius);
+		}
+		.ws-indicator {
+			width: 8px;
+			height: 8px;
+			border-radius: 50%;
+			background: #94a3b8;
+		}
+		.ws-connected .ws-indicator {
+			background: var(--color-success);
+			box-shadow: 0 0 8px var(--color-success);
+			animation: pulse 2s infinite;
+		}
+		@keyframes pulse {
+			0% { opacity: 0.5; }
+			50% { opacity: 1; }
+			100% { opacity: 0.5; }
+		}
+		.event-list {
+			display: flex;
+			flex-direction: column;
+			gap: var(--spacing-sm);
+			max-height: 550px;
+			overflow-y: auto;
+			padding-right: var(--spacing-xs);
+		}
+		.event-card {
+			padding: var(--spacing-md);
+			border-radius: var(--radius);
+			background: #f8fafc;
+			border-left: 4px solid #64748b;
+			transition: all 0.2s ease;
+			animation: slideIn 0.3s ease-out;
+		}
+		@keyframes slideIn {
+			from { transform: translateY(-10px); opacity: 0; }
+			to { transform: translateY(0); opacity: 1; }
+		}
+		.event-card:hover {
+			transform: translateX(4px);
+			box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+		}
+		.event-card.outbound {
+			border-left-color: var(--color-primary);
+			background: #eff6ff;
+		}
+		.event-card.inbound {
+			border-left-color: var(--color-success);
+			background: #f0fdf4;
+		}
+		.event-card.webhook {
+			border-left-color: #a855f7;
+			background: #faf5ff;
+		}
+		.event-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: var(--spacing-xs);
+		}
+		.event-time {
+			font-size: 0.75rem;
+			color: var(--color-text-muted);
+			font-family: monospace;
+		}
+		.event-body {
+			font-size: 0.875rem;
+			font-family: monospace;
+			white-space: pre-wrap;
+			word-break: break-all;
+			background: rgba(0,0,0,0.03);
+			padding: var(--spacing-sm);
+			border-radius: var(--radius);
+			margin-top: var(--spacing-xs);
+		}
+		.form-select {
+			width: 100%;
+			padding: var(--spacing-sm) var(--spacing-md);
+			border: 1px solid var(--color-border);
+			border-radius: var(--radius);
+			font-size: 1rem;
+			background: white;
+			outline: none;
+		}
+		.form-select:focus {
+			border-color: var(--color-primary);
+		}
+	</style>
+
+	<div class="page-header">
+		<h1>Developer Playground</h1>
+		<p class="subtitle text-muted">Test message ingestion and watch channel events live via WebSockets</p>
+	</div>
+
+	<div class="playground-grid">
+		<!-- Left Panel: Send message form -->
+		<div class="playground-panel">
+			<h2>
+				<span>✉</span> Send Test Message
+			</h2>
+			<div id="form-alert"></div>
+			<form
+				hx-post="/admin/playground/send"
+				hx-target="#form-alert"
+				hx-swap="innerHTML"
+				class="form"
+			>
+				<div class="form-group">
+					<label for="workspace_id">Workspace</label>
+					<select name="workspace_id" id="workspace_id" class="form-select" required>
+						for _, ws := range workspaces {
+							<option value={ ws.ID.String() }>{ ws.Name }</option>
+						}
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="channel">Channel</label>
+					<select name="channel" id="channel" class="form-select" required>
+						<option value="whatsapp_cloud">WhatsApp Cloud (WABA)</option>
+						<option value="telegram">Telegram Bot</option>
+						<option value="whatsapp">WhatsApp Web (QR Code)</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="to">Recipient (Destination)</label>
+					<input
+						type="text"
+						name="to"
+						id="to"
+						placeholder="ex: 5511999999999 or telegram chat_id"
+						required
+					/>
+				</div>
+
+				<div class="form-group">
+					<label for="body">Message Body</label>
+					<textarea
+						name="body"
+						id="body"
+						rows="4"
+						style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--color-border); border-radius: var(--radius); resize: vertical;"
+						placeholder="Hello from the OmniGo testing playground!"
+						required
+					></textarea>
+				</div>
+
+				<button type="submit" class="btn btn-primary" style="width: 100%;">
+					Enqueue Outbound Message
+				</button>
+			</form>
+		</div>
+
+		<!-- Right Panel: Live Logs -->
+		<div class="playground-panel" hx-ext="ws" ws-connect="/admin/playground/ws">
+			<h2>
+				<span>⚡</span> Live Activity Stream
+			</h2>
+
+			<div class="ws-status-bar ws-connected" id="ws-status-container">
+				<div class="ws-indicator"></div>
+				<span id="ws-status-text">Connected to NATS Broker via WebSocket</span>
+			</div>
+
+			<div class="event-list" id="playground-events">
+				<div class="empty-state" id="playground-empty">
+					No events received yet. Send a test message or trigger an inbound webhook to see activity.
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+// PlaygroundEventRow renders a single event card for the WS feed.
+templ PlaygroundEventRow(eventType string, badgeClass string, title string, timeStr string, details string) {
+	<div id="playground-empty" hx-swap-oob="delete"></div>
+	<div id="playground-events" hx-swap-oob="afterbegin">
+		<div class={ "event-card", eventType }>
+			<div class="event-header">
+				<span class={ "badge", badgeClass }>{ eventType }</span>
+				<span class="event-time">{ timeStr }</span>
+			</div>
+			<strong>{ title }</strong>
+			<div class="event-body">{ details }</div>
+		</div>
+	</div>
+}
