@@ -19,7 +19,10 @@ description: Completed spike for interactive template selection and media upload
    - Files are stored in S3/MinIO using the workspace prefix: `{workspace_id}/{uuid}-{filename}`.
    - Returns the local proxy path: `/media/{workspace_id}/{uuid}-{filename}`.
 4. **Real-time Live Preview**:
-   - Built a lightweight vanilla JS real-time previewer. As the developer types into the parameter inputs, the template body updates immediately.
-   - If an image/video/document URL or uploaded file is provided, a media preview card displays instantly.
-5. **WABA Media Parameters Support**:
+   - Fixed the live preview by storing raw template variables as dataset attributes (`data-body-text` and `data-header-format`) on the DOM container, bypassing Go-to-JS string escaping issues.
+   - The preview updates instantly when the user types in any variable fields or specifies a media URL.
+5. **Cleaned Up Form & Redundant Inputs**:
+   - Removed the old redundant "WABA Template Options (Optional)" form fields.
+   - Tied the visibility and requirement of the "Message Body" field dynamically: it is shown and `required` when no template is selected or when a non-WABA channel is chosen; it is hidden and non-required when a template is active.
+6. **WABA Media Parameters Support**:
    - Extended the `wabaParameter` struct and serialization mapping in `waba.go` to support nested `image`, `video`, and `document` structures expected by Meta's Graph API.
