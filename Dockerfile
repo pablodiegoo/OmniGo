@@ -3,15 +3,17 @@ FROM golang:1.26.4-alpine AS builder
 
 WORKDIR /app
 
-# Install git and certificates
+# Install git, certificates, and templ CLI
 RUN apk add --no-cache git ca-certificates
+RUN go install github.com/a-h/templ/cmd/templ@v0.3.1020
 
-# Copy dependency files and download modules
-COPY go.mod go.sum ./
+# Copy all files (needed first due to local go.mod replaces)
+COPY . .
+
 RUN go mod download
 
-# Copy source code (we assume templ files are already pre-generated and checked in)
-COPY . .
+# Generate templ files
+RUN templ generate ./...
 
 # Build the CGO-free static binary
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o omnigo ./cmd/omnigo
