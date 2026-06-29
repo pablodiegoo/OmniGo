@@ -114,6 +114,7 @@ Items acknowledged and carried forward from previous milestone close:
 | GS14 | 2026-06-28 | documentar-configuracao-provedores | complete ✓ |
 | GS15 | 2026-06-29 | guias-interativos-dashboard | complete ✓ |
 | GS16 | 2026-06-29 | atualizar-documentacao-projeto | complete ✓ |
+| GS17 | 2026-06-29 | configuracao-verify-token | complete ✓ |
 
 
 

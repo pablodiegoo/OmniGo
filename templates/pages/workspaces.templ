@@ -12,6 +12,7 @@ type WABAConfig struct {
 	PhoneNumberID string `json:"phone_number_id"`
 	Token         string `json:"token"`
 	WABAAccountID string `json:"waba_account_id"`
+	VerifyToken   string `json:"verify_token"`
 }
 
 type TelegramConfig struct {
@@ -212,7 +213,15 @@ templ WABACredentialsCard(workspaceID string, config WABAConfig, errStr string, 
 					<dt style="font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);">WABA Account ID</dt>
 					<dd style="margin-bottom: 0.5rem; font-family: monospace;">{ config.WABAAccountID }</dd>
 					<dt style="font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);">API Token</dt>
-					<dd style="font-family: monospace;">{ maskToken(config.Token) }</dd>
+					<dd style="font-family: monospace; margin-bottom: 0.5rem;">{ maskToken(config.Token) }</dd>
+					<dt style="font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);">Verify Token</dt>
+					<dd style="font-family: monospace;">
+						if config.VerifyToken != "" {
+							{ config.VerifyToken }
+						} else {
+							{ "pergo_verify_token_" + workspaceID }
+						}
+					</dd>
 				</dl>
 				<button
 					class="btn btn-danger btn-sm"
@@ -241,6 +250,10 @@ templ WABACredentialsCard(workspaceID string, config WABAConfig, errStr string, 
 					<div class="form-group">
 						<label for="waba_token">Meta API Token</label>
 						<input type="password" id="waba_token" name="token" required class="form-input"/>
+					</div>
+					<div class="form-group">
+						<label for="waba_verify_token">Webhook Verify Token</label>
+						<input type="text" id="waba_verify_token" name="verify_token" value={ config.VerifyToken } placeholder={ "pergo_verify_token_" + workspaceID } class="form-input"/>
 					</div>
 					<button type="submit" class="btn btn-primary btn-sm">Configure WABA</button>
 				</form>

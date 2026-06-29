@@ -34,6 +34,7 @@ type WABAConfig struct {
 	PhoneNumberID string `json:"phone_number_id"`
 	Token         string `json:"token"`
 	WABAAccountID string `json:"waba_account_id"`
+	VerifyToken   string `json:"verify_token"`
 }
 
 

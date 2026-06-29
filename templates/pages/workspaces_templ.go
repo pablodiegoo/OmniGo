@@ -20,6 +20,7 @@ type WABAConfig struct {
 	PhoneNumberID string `json:"phone_number_id"`
 	Token         string `json:"token"`
 	WABAAccountID string `json:"waba_account_id"`
+	VerifyToken   string `json:"verify_token"`
 }
 
 type TelegramConfig struct {
@@ -138,7 +139,7 @@ func WorkspaceRow(ws repository.Workspace) templ.Component {
 		var templ_7745c5c3_Var4 templ.SafeURL
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(fmt.Sprintf("/admin/workspaces/%s", ws.ID)))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 75, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 76, Col: 70}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -151,7 +152,7 @@ func WorkspaceRow(ws repository.Workspace) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(ws.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 75, Col: 82}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 76, Col: 82}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -164,7 +165,7 @@ func WorkspaceRow(ws repository.Workspace) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(ws.CreatedAt.Format("2006-01-02 15:04"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 77, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 78, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -177,7 +178,7 @@ func WorkspaceRow(ws repository.Workspace) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/confirm-delete", ws.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 81, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 82, Col: 70}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
 		if templ_7745c5c3_Err != nil {
@@ -280,7 +281,7 @@ func WorkspaceDetailContent(ws repository.Workspace, keys []repository.APIKey, w
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(ws.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 126, Col: 15}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 127, Col: 15}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -293,7 +294,7 @@ func WorkspaceDetailContent(ws repository.Workspace, keys []repository.APIKey, w
 		var templ_7745c5c3_Var12 templ.SafeURL
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(fmt.Sprintf("/admin/workspaces/%s/templates", ws.ID)))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 128, Col: 80}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 129, Col: 80}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
@@ -306,7 +307,7 @@ func WorkspaceDetailContent(ws repository.Workspace, keys []repository.APIKey, w
 		var templ_7745c5c3_Var13 templ.SafeURL
 		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(fmt.Sprintf("/admin/workspaces/%s/webhooks", ws.ID)))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 129, Col: 79}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 130, Col: 79}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
@@ -319,7 +320,7 @@ func WorkspaceDetailContent(ws repository.Workspace, keys []repository.APIKey, w
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(ws.ID.String())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 138, Col: 23}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 139, Col: 23}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
@@ -332,7 +333,7 @@ func WorkspaceDetailContent(ws repository.Workspace, keys []repository.APIKey, w
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(ws.CreatedAt.Format("2006-01-02 15:04:05"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 140, Col: 51}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 141, Col: 51}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
@@ -345,7 +346,7 @@ func WorkspaceDetailContent(ws repository.Workspace, keys []repository.APIKey, w
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(ws.UpdatedAt.Format("2006-01-02 15:04:05"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 142, Col: 51}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 143, Col: 51}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -370,7 +371,7 @@ func WorkspaceDetailContent(ws repository.Workspace, keys []repository.APIKey, w
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/keys/new", ws.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 158, Col: 64}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 159, Col: 64}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
 		if templ_7745c5c3_Err != nil {
@@ -467,7 +468,7 @@ func WABACredentialsCard(workspaceID string, config WABAConfig, errStr string, e
 			var templ_7745c5c3_Var20 string
 			templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 205, Col: 13}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 206, Col: 13}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 			if templ_7745c5c3_Err != nil {
@@ -486,7 +487,7 @@ func WABACredentialsCard(workspaceID string, config WABAConfig, errStr string, e
 			var templ_7745c5c3_Var21 string
 			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(config.PhoneNumberID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 211, Col: 86}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 212, Col: 86}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 			if templ_7745c5c3_Err != nil {
@@ -499,101 +500,152 @@ func WABACredentialsCard(workspaceID string, config WABAConfig, errStr string, e
 			var templ_7745c5c3_Var22 string
 			templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(config.WABAAccountID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 213, Col: 86}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 214, Col: 86}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</dd><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">API Token</dt><dd style=\"font-family: monospace;\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</dd><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">API Token</dt><dd style=\"font-family: monospace; margin-bottom: 0.5rem;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var23 string
 			templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(maskToken(config.Token))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 215, Col: 66}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 216, Col: 89}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</dd></dl><button class=\"btn btn-danger btn-sm\" hx-delete=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</dd><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">Verify Token</dt><dd style=\"font-family: monospace;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var24 string
-			templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/whatsapp_cloud", workspaceID))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 219, Col: 92}
+			if config.VerifyToken != "" {
+				var templ_7745c5c3_Var24 string
+				templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(config.VerifyToken)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 220, Col: 27}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else {
+				var templ_7745c5c3_Var25 string
+				templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs("pergo_verify_token_" + workspaceID)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 222, Col: 44}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var24)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" hx-target=\"#waba-credentials-card\" hx-swap=\"outerHTML\" hx-confirm=\"Are you sure you want to revoke WhatsApp Cloud credentials?\">Revoke</button> ")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<p style=\"color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1rem;\">No credentials configured.</p><form hx-post=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var25 string
-			templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/whatsapp_cloud", workspaceID))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 229, Col: 90}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var25)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" hx-target=\"#waba-credentials-card\" hx-swap=\"outerHTML\"><div class=\"form-group\"><label for=\"waba_phone_number_id\">Phone Number ID</label> <input type=\"text\" id=\"waba_phone_number_id\" name=\"phone_number_id\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</dd></dl><button class=\"btn btn-danger btn-sm\" hx-delete=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var26 string
-			templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.ResolveAttributeValue(config.PhoneNumberID)
+			templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/whatsapp_cloud", workspaceID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 235, Col: 102}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 228, Col: 92}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var26)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" required class=\"form-input\"></div><div class=\"form-group\"><label for=\"waba_account_id\">WABA Account ID</label> <input type=\"text\" id=\"waba_account_id\" name=\"waba_account_id\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\" hx-target=\"#waba-credentials-card\" hx-swap=\"outerHTML\" hx-confirm=\"Are you sure you want to revoke WhatsApp Cloud credentials?\">Revoke</button> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<p style=\"color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1rem;\">No credentials configured.</p><form hx-post=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var27 string
-			templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.ResolveAttributeValue(config.WABAAccountID)
+			templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/whatsapp_cloud", workspaceID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 239, Col: 97}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 238, Col: 90}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var27)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "\" required class=\"form-input\"></div><div class=\"form-group\"><label for=\"waba_token\">Meta API Token</label> <input type=\"password\" id=\"waba_token\" name=\"token\" required class=\"form-input\"></div><button type=\"submit\" class=\"btn btn-primary btn-sm\">Configure WABA</button></form>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" hx-target=\"#waba-credentials-card\" hx-swap=\"outerHTML\"><div class=\"form-group\"><label for=\"waba_phone_number_id\">Phone Number ID</label> <input type=\"text\" id=\"waba_phone_number_id\" name=\"phone_number_id\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var28 string
+			templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.ResolveAttributeValue(config.PhoneNumberID)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 244, Col: 102}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var28)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "\" required class=\"form-input\"></div><div class=\"form-group\"><label for=\"waba_account_id\">WABA Account ID</label> <input type=\"text\" id=\"waba_account_id\" name=\"waba_account_id\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var29 string
+			templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.ResolveAttributeValue(config.WABAAccountID)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 248, Col: 97}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var29)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "\" required class=\"form-input\"></div><div class=\"form-group\"><label for=\"waba_token\">Meta API Token</label> <input type=\"password\" id=\"waba_token\" name=\"token\" required class=\"form-input\"></div><div class=\"form-group\"><label for=\"waba_verify_token\">Webhook Verify Token</label> <input type=\"text\" id=\"waba_verify_token\" name=\"verify_token\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var30 string
+			templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.ResolveAttributeValue(config.VerifyToken)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 256, Col: 94}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var30)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\" placeholder=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var31 string
+			templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.ResolveAttributeValue("pergo_verify_token_" + workspaceID)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 256, Col: 146}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var31)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "\" class=\"form-input\"></div><button type=\"submit\" class=\"btn btn-primary btn-sm\">Configure WABA</button></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<details style=\"margin-top: 1.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem; font-size: 0.85rem; color: var(--color-text-muted);\"><summary style=\"cursor: pointer; font-weight: 600; color: var(--color-primary); outline: none;\">Ajuda: Configurar Webhook na Meta</summary><div style=\"margin-top: 0.5rem; line-height: 1.4;\"><p style=\"margin-bottom: 0.5rem;\">1. No painel <a href=\"https://developers.facebook.com/\" target=\"_blank\" style=\"color: var(--color-primary); text-decoration: underline;\">Meta for Developers</a>, vá em WhatsApp -> Configuração.</p><p style=\"margin-bottom: 0.25rem;\">2. Configure a <strong>Callback URL</strong> como:</p><div style=\"display: flex; gap: 0.5rem; margin-bottom: 0.5rem;\"><input type=\"text\" readonly value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "<details style=\"margin-top: 1.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem; font-size: 0.85rem; color: var(--color-text-muted);\"><summary style=\"cursor: pointer; font-weight: 600; color: var(--color-primary); outline: none;\">Ajuda: Configurar Webhook na Meta</summary><div style=\"margin-top: 0.5rem; line-height: 1.4;\"><p style=\"margin-bottom: 0.5rem;\">1. No painel <a href=\"https://developers.facebook.com/\" target=\"_blank\" style=\"color: var(--color-primary); text-decoration: underline;\">Meta for Developers</a>, vá em WhatsApp -> Configuração.</p><p style=\"margin-bottom: 0.25rem;\">2. Configure a <strong>Callback URL</strong> como:</p><div style=\"display: flex; gap: 0.5rem; margin-bottom: 0.5rem;\"><input type=\"text\" readonly value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var28 string
-		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("%s/webhooks/waba/%s", externalURL, workspaceID))
+		var templ_7745c5c3_Var32 string
+		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("%s/webhooks/waba/%s", externalURL, workspaceID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 257, Col: 102}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 270, Col: 102}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var28)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var32)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\" style=\"flex: 1; font-family: monospace; font-size: 0.75rem; padding: 0.25rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-bg-offset);\" onclick=\"this.select();\"> <button type=\"button\" class=\"btn btn-secondary\" style=\"padding: 0.25rem 0.5rem; font-size: 0.75rem;\" onclick=\"navigator.clipboard.writeText(this.previousElementSibling.value); alert('URL Copiada!');\">Copiar</button></div><p style=\"margin-bottom: 0.5rem;\">3. Insira o mesmo <strong>Verify Token</strong> de sua preferência no painel da Meta e configure no PerGo.</p><p style=\"margin-bottom: 0.5rem;\">4. Em webhook fields, assine o campo <strong>messages</strong>.</p></div></details></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "\" style=\"flex: 1; font-family: monospace; font-size: 0.75rem; padding: 0.25rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-bg-offset);\" onclick=\"this.select();\"> <button type=\"button\" class=\"btn btn-secondary\" style=\"padding: 0.25rem 0.5rem; font-size: 0.75rem;\" onclick=\"navigator.clipboard.writeText(this.previousElementSibling.value); alert('URL Copiada!');\">Copiar</button></div><p style=\"margin-bottom: 0.5rem;\">3. Insira o mesmo <strong>Verify Token</strong> de sua preferência no painel da Meta e configure no PerGo.</p><p style=\"margin-bottom: 0.5rem;\">4. Em webhook fields, assine o campo <strong>messages</strong>.</p></div></details></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -617,98 +669,98 @@ func TelegramCredentialsCard(workspaceID string, config TelegramConfig, errStr s
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var29 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var29 == nil {
-			templ_7745c5c3_Var29 = templ.NopComponent
+		templ_7745c5c3_Var33 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var33 == nil {
+			templ_7745c5c3_Var33 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<div id=\"telegram-credentials-card\" class=\"stat-card\" style=\"flex: 1;\"><h3>Telegram Bot</h3><div style=\"margin-top: 1rem;\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div id=\"telegram-credentials-card\" class=\"stat-card\" style=\"flex: 1;\"><h3>Telegram Bot</h3><div style=\"margin-top: 1rem;\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if errStr != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "<div class=\"alert alert-error\" style=\"margin-bottom: 1rem; background: #fef2f2; border: 1px solid #fecaca; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius); color: var(--color-error); font-size: 0.875rem;\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<div class=\"alert alert-error\" style=\"margin-bottom: 1rem; background: #fef2f2; border: 1px solid #fecaca; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius); color: var(--color-error); font-size: 0.875rem;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var30 string
-			templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
+			var templ_7745c5c3_Var34 string
+			templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 274, Col: 13}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 287, Col: 13}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
 		if config.Token != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<dl class=\"detail-list\" style=\"margin-bottom: 1rem;\"><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">Bot Token</dt><dd style=\"font-family: monospace;\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<dl class=\"detail-list\" style=\"margin-bottom: 1rem;\"><dt style=\"font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-muted);\">Bot Token</dt><dd style=\"font-family: monospace;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var31 string
-			templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(maskToken(config.Token))
+			var templ_7745c5c3_Var35 string
+			templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs(maskToken(config.Token))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 280, Col: 66}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 293, Col: 66}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</dd></dl><button class=\"btn btn-danger btn-sm\" hx-delete=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var32 string
-			templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/telegram", workspaceID))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 284, Col: 86}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var32)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</dd></dl><button class=\"btn btn-danger btn-sm\" hx-delete=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "\" hx-target=\"#telegram-credentials-card\" hx-swap=\"outerHTML\" hx-confirm=\"Are you sure you want to revoke Telegram credentials?\">Revoke</button> ")
+			var templ_7745c5c3_Var36 string
+			templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/telegram", workspaceID))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 297, Col: 86}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var36)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "\" hx-target=\"#telegram-credentials-card\" hx-swap=\"outerHTML\" hx-confirm=\"Are you sure you want to revoke Telegram credentials?\">Revoke</button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<p style=\"color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1rem;\">No credentials configured.</p><form hx-post=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<p style=\"color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1rem;\">No credentials configured.</p><form hx-post=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var33 string
-			templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/telegram", workspaceID))
+			var templ_7745c5c3_Var37 string
+			templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("/admin/workspaces/%s/credentials/telegram", workspaceID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 294, Col: 84}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 307, Col: 84}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var33)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var37)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\" hx-target=\"#telegram-credentials-card\" hx-swap=\"outerHTML\"><div class=\"form-group\"><label for=\"tg_token\">Bot Token</label> <input type=\"password\" id=\"tg_token\" name=\"token\" required class=\"form-input\"></div><button type=\"submit\" class=\"btn btn-primary btn-sm\">Configure Telegram</button></form>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "\" hx-target=\"#telegram-credentials-card\" hx-swap=\"outerHTML\"><div class=\"form-group\"><label for=\"tg_token\">Bot Token</label> <input type=\"password\" id=\"tg_token\" name=\"token\" required class=\"form-input\"></div><button type=\"submit\" class=\"btn btn-primary btn-sm\">Configure Telegram</button></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<details style=\"margin-top: 1.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem; font-size: 0.85rem; color: var(--color-text-muted);\"><summary style=\"cursor: pointer; font-weight: 600; color: var(--color-primary); outline: none;\">Ajuda: Configurar Bot no Telegram</summary><div style=\"margin-top: 0.5rem; line-height: 1.4;\"><p style=\"margin-bottom: 0.5rem;\">1. Crie o seu bot no Telegram conversando com o <a href=\"https://t.me/BotFather\" target=\"_blank\" style=\"color: var(--color-primary); text-decoration: underline;\">&#64;BotFather</a>.</p><p style=\"margin-bottom: 0.5rem;\">2. Envie o comando <code>/newbot</code> e siga as instruções para obter o <strong>Bot Token</strong>.</p><p style=\"margin-bottom: 0.25rem;\"><strong>Nota:</strong> Se o seu servidor usar HTTPS, o PerGo registrará o webhook automaticamente no Telegram apontando para:</p><div style=\"display: flex; gap: 0.5rem; margin-bottom: 0.5rem;\"><input type=\"text\" readonly value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "<details style=\"margin-top: 1.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem; font-size: 0.85rem; color: var(--color-text-muted);\"><summary style=\"cursor: pointer; font-weight: 600; color: var(--color-primary); outline: none;\">Ajuda: Configurar Bot no Telegram</summary><div style=\"margin-top: 0.5rem; line-height: 1.4;\"><p style=\"margin-bottom: 0.5rem;\">1. Crie o seu bot no Telegram conversando com o <a href=\"https://t.me/BotFather\" target=\"_blank\" style=\"color: var(--color-primary); text-decoration: underline;\">&#64;BotFather</a>.</p><p style=\"margin-bottom: 0.5rem;\">2. Envie o comando <code>/newbot</code> e siga as instruções para obter o <strong>Bot Token</strong>.</p><p style=\"margin-bottom: 0.25rem;\"><strong>Nota:</strong> Se o seu servidor usar HTTPS, o PerGo registrará o webhook automaticamente no Telegram apontando para:</p><div style=\"display: flex; gap: 0.5rem; margin-bottom: 0.5rem;\"><input type=\"text\" readonly value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var34 string
-		templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("%s/webhooks/telegram/%s", externalURL, workspaceID))
+		var templ_7745c5c3_Var38 string
+		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("%s/webhooks/telegram/%s", externalURL, workspaceID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 315, Col: 106}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/workspaces.templ`, Line: 328, Col: 106}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var34)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var38)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\" style=\"flex: 1; font-family: monospace; font-size: 0.75rem; padding: 0.25rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-bg-offset);\" onclick=\"this.select();\"> <button type=\"button\" class=\"btn btn-secondary\" style=\"padding: 0.25rem 0.5rem; font-size: 0.75rem;\" onclick=\"navigator.clipboard.writeText(this.previousElementSibling.value); alert('URL Copiada!');\">Copiar</button></div></div></details></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "\" style=\"flex: 1; font-family: monospace; font-size: 0.75rem; padding: 0.25rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-bg-offset);\" onclick=\"this.select();\"> <button type=\"button\" class=\"btn btn-secondary\" style=\"padding: 0.25rem 0.5rem; font-size: 0.75rem;\" onclick=\"navigator.clipboard.writeText(this.previousElementSibling.value); alert('URL Copiada!');\">Copiar</button></div></div></details></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

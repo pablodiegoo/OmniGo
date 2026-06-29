@@ -162,6 +162,7 @@ func (h *WorkspaceHandler) SaveCredentials(c *echo.Context) error {
 			PhoneNumberID: c.FormValue("phone_number_id"),
 			Token:         c.FormValue("token"),
 			WABAAccountID: c.FormValue("waba_account_id"),
+			VerifyToken:   c.FormValue("verify_token"),
 		}
 		// Validate credentials synchronously by running template sync
 		err = h.syncTemplatesFromMeta(c.Request().Context(), workspaceID, waba)
