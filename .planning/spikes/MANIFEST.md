@@ -14,4 +14,4 @@ Redesign the PerGo channel credentials and devices architecture to support multi
 |---|------|------|-----------|---------|------|
 | 001 | multi-instance-schema | standard | Given a workspace with multiple configurations, when migrated to a unified connections schema, then we can store and encrypt distinct credentials/sessions cleanly. | VALIDATED | db, schema |
 | 002 | api-routing-payload | standard | Given a message request, when multiple instances exist, then we can route it dynamically via the `from` field with fallback support. | VALIDATED | api, routing |
-| 003 | dynamic-adapter-registry | standard | Given a running server, when connection credentials change, then the registry can dynamically instantiate/update dispatchers in memory. | PENDING | concurrency, registry |
+| 003 | dynamic-adapter-registry | standard | Given a running server, when connection credentials change, then the registry can dynamically instantiate/update dispatchers in memory. | VALIDATED | concurrency, registry |
