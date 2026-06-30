@@ -285,8 +285,8 @@ func TestValidateMessageMedia(t *testing.T) {
 
 func TestErrorResponseJSON(t *testing.T) {
 	resp := ErrorResponse{
-		Code:    "invalid_payload",
-		Message: "request body validation failed",
+		Code:     "invalid_payload",
+		Message:  "request body validation failed",
 		MoreInfo: "https://docs.pergo.dev/errors/invalid_payload",
 		Details: []FieldError{
 			{Field: "to", Message: "is required"},
@@ -373,4 +373,3 @@ func TestValidateMessageTemplateMissingLanguage(t *testing.T) {
 		t.Errorf("expected field error for 'language', got %+v", err.Details)
 	}
 }
-

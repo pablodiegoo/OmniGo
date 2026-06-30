@@ -23,8 +23,8 @@ type WABATemplate struct {
 	MetaTemplateID string          `json:"meta_template_id"`
 	Name           string          `json:"name"`
 	Language       string          `json:"language"`
-	Status         string          `json:"status"` // e.g. "APPROVED", "PENDING", "REJECTED"
-	Category       string          `json:"category"` // e.g. "MARKETING", "UTILITY", "AUTHENTICATION"
+	Status         string          `json:"status"`     // e.g. "APPROVED", "PENDING", "REJECTED"
+	Category       string          `json:"category"`   // e.g. "MARKETING", "UTILITY", "AUTHENTICATION"
 	Components     json.RawMessage `json:"components"` // JSON structure from Meta template components
 	CreatedAt      time.Time       `json:"created_at"`
 	UpdatedAt      time.Time       `json:"updated_at"`
@@ -81,7 +81,6 @@ func (r *WABATemplateRepository) Upsert(ctx context.Context, tmpl *WABATemplate)
 	}
 	return &dbTmpl, nil
 }
-
 
 // GetByID retrieves a template by ID.
 func (r *WABATemplateRepository) GetByID(ctx context.Context, id uuid.UUID) (*WABATemplate, error) {

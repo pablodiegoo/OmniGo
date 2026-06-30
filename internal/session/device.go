@@ -28,9 +28,9 @@ const (
 type Device struct {
 	ID             uuid.UUID    `json:"id"`
 	WorkspaceID    uuid.UUID    `json:"workspace_id"`
-	Channel        string       `json:"channel"`         // "whatsapp"
-	JID            string       `json:"jid"`             // whatsmeow JID, e.g. "5511999999999@s.whatsapp.net"
-	Phone          string       `json:"phone"`           // phone number
+	Channel        string       `json:"channel"` // "whatsapp"
+	JID            string       `json:"jid"`     // whatsmeow JID, e.g. "5511999999999@s.whatsapp.net"
+	Phone          string       `json:"phone"`   // phone number
 	Status         DeviceStatus `json:"status"`
 	ConnectedSince *time.Time   `json:"connected_since"`
 	CreatedAt      time.Time    `json:"created_at"`

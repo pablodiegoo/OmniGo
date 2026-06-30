@@ -324,4 +324,3 @@ func (h *WABATemplateHandler) NewForm(c *echo.Context) error {
 
 	return mw.Render(c, http.StatusOK, pages.WABATemplateCreateForm(workspaceID))
 }
-

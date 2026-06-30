@@ -62,8 +62,8 @@ func RateLimiterMiddleware(rl *RateLimiter) echo.MiddlewareFunc {
 			if !rl.Allow(workspaceID) {
 				c.Response().Header().Set("Retry-After", "1")
 				return c.JSON(http.StatusTooManyRequests, domain.ErrorResponse{
-					Code:    "rate_limited",
-					Message: "too many requests, slow down",
+					Code:     "rate_limited",
+					Message:  "too many requests, slow down",
 					MoreInfo: "https://docs.pergo.dev/errors/rate_limited",
 				})
 			}

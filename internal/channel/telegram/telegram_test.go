@@ -278,7 +278,7 @@ func TestTelegramDispatch(t *testing.T) {
 		payload := &channel.MessagePayload{
 			ConnectionID:   connID,
 			SenderIdentity: "@test_bot",
-			To: "987654321",
+			To:             "987654321",
 			Media: &domain.Media{
 				MediaURL:  "/media/" + ws.ID.String() + "/hash123.png",
 				MediaType: "image",

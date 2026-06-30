@@ -59,8 +59,8 @@ func (h *MessageHandler) Create(c *echo.Context) error {
 		if h.QueueDepth.Exceeds(workspaceID, 1000) {
 			c.Response().Header().Set("Retry-After", "5")
 			return c.JSON(http.StatusTooManyRequests, domain.ErrorResponse{
-				Code:    "queue_full",
-				Message: "per-session message queue limit exceeded",
+				Code:     "queue_full",
+				Message:  "per-session message queue limit exceeded",
 				MoreInfo: "https://docs.pergo.dev/errors/queue_full",
 			})
 		}

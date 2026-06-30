@@ -42,7 +42,6 @@ type TemplateParameter struct {
 	Text string `json:"text,omitempty"`
 }
 
-
 // Dispatcher sends a message through a specific channel adapter.
 // Implementations must be safe for concurrent use.
 type Dispatcher interface {

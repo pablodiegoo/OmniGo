@@ -37,7 +37,6 @@ type WABAConfig struct {
 	VerifyToken   string `json:"verify_token"`
 }
 
-
 type wabaMessageRequest struct {
 	MessagingProduct string        `json:"messaging_product"`
 	RecipientType    string        `json:"recipient_type"`
@@ -53,8 +52,8 @@ type wabaText struct {
 }
 
 type wabaTemplate struct {
-	Name       string         `json:"name"`
-	Language   wabaLanguage   `json:"language"`
+	Name       string          `json:"name"`
+	Language   wabaLanguage    `json:"language"`
 	Components []wabaComponent `json:"components,omitempty"`
 }
 

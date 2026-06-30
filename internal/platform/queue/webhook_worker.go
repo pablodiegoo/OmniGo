@@ -287,7 +287,7 @@ func (w *WebhookWorker) handleRetry(msg jetstream.Msg, err error, evt *WebhookEv
 
 	if isTerminalErr || numDelivered >= 10 {
 		slog.Error("webhook worker: moving webhook to DLQ", "error", err, "trace_id", evt.TraceID, "attempts", numDelivered)
-		
+
 		wsID, _ := uuid.Parse(evt.WorkspaceID)
 		failReason := err.Error()
 

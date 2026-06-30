@@ -40,18 +40,18 @@ const (
 // Manager coordinates WhatsApp device lifecycle: startup reconnection,
 // session registration, and graceful shutdown.
 type Manager struct {
-	db                  *sql.DB
-	repo                *DeviceRepository
-	registry            *ActiveSession
-	dispatchers         *channel.Registry
-	waVersion           string
+	db                   *sql.DB
+	repo                 *DeviceRepository
+	registry             *ActiveSession
+	dispatchers          *channel.Registry
+	waVersion            string
 	recipientSessionRepo *repository.RecipientSessionRepository
-	s3Client            *storage.S3Client
-	dedupRepo           *repository.InboundDedupRepository
-	publisher           *queue.JetStreamPublisher
-	auditWriter         audit.Writer
-	wsRepo              *repository.WorkspaceRepository
-	mu                  sync.Mutex
+	s3Client             *storage.S3Client
+	dedupRepo            *repository.InboundDedupRepository
+	publisher            *queue.JetStreamPublisher
+	auditWriter          audit.Writer
+	wsRepo               *repository.WorkspaceRepository
+	mu                   sync.Mutex
 }
 
 // NewManager creates a session manager.
@@ -69,17 +69,17 @@ func NewManager(
 	wsRepo *repository.WorkspaceRepository,
 ) *Manager {
 	return &Manager{
-		db:                  db,
-		repo:                repo,
-		registry:            registry,
-		dispatchers:         dispatchers,
-		waVersion:           waVersion,
+		db:                   db,
+		repo:                 repo,
+		registry:             registry,
+		dispatchers:          dispatchers,
+		waVersion:            waVersion,
 		recipientSessionRepo: recipientSessionRepo,
-		s3Client:            s3Client,
-		dedupRepo:           dedupRepo,
-		publisher:           publisher,
-		auditWriter:         auditWriter,
-		wsRepo:              wsRepo,
+		s3Client:             s3Client,
+		dedupRepo:            dedupRepo,
+		publisher:            publisher,
+		auditWriter:          auditWriter,
+		wsRepo:               wsRepo,
 	}
 }
 

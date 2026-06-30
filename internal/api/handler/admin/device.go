@@ -23,11 +23,11 @@ type DeviceHandler struct {
 
 // pairingState holds the current QR pairing state for a phone number.
 type pairingState struct {
-	code    string        // raw QR code string (empty if not yet received)
-	status  string        // "pending", "paired", "error"
-	message string        // human-readable message
-	expires time.Time     // when the current QR code expires
-	mu      sync.RWMutex  // protects fields
+	code    string       // raw QR code string (empty if not yet received)
+	status  string       // "pending", "paired", "error"
+	message string       // human-readable message
+	expires time.Time    // when the current QR code expires
+	mu      sync.RWMutex // protects fields
 }
 
 // pairingSessions holds in-memory pairing state keyed by phone number.

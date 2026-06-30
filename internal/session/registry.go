@@ -121,4 +121,3 @@ func (r *ActiveSession) GetClient(jid string) *whatsapp.WhatsAppClient {
 	}
 	return s.Client
 }
-

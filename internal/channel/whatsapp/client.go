@@ -168,4 +168,3 @@ func ConfigureProxy(client *whatsmeow.Client, proxyStr string) error {
 	}
 	return client.SetProxyAddress(proxyStr)
 }
-

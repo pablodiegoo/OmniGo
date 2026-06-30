@@ -34,9 +34,9 @@ type QueueDepthTracker interface {
 // It supports retry with exponential backoff, TTL enforcement, and
 // delivery deduplication.
 type Worker struct {
-	consumer   jetstream.Consumer
-	cancel     context.CancelFunc
-	done       chan struct{}
+	consumer jetstream.Consumer
+	cancel   context.CancelFunc
+	done     chan struct{}
 
 	maxRetries int
 	maxBackoff time.Duration
@@ -464,7 +464,7 @@ func (w *Worker) isExpired(msg jetstream.Msg) bool {
 	// Parse minimal fields from the JSON payload to check TTL.
 	// The payload is a CreateMessageRequest serialized to JSON.
 	type ttlPayload struct {
-		TTLSeconds *int `json:"ttl_seconds"`
+		TTLSeconds *int   `json:"ttl_seconds"`
 		QueuedAt   string `json:"queued_at"`
 	}
 
@@ -485,8 +485,6 @@ func (w *Worker) isExpired(msg jetstream.Msg) bool {
 	expiry := queuedAt.Add(time.Duration(*p.TTLSeconds) * time.Second)
 	return time.Now().UTC().After(expiry)
 }
-
-
 
 // Stop cancels the consumer context and waits for the goroutine to finish.
 func (w *Worker) Stop() {

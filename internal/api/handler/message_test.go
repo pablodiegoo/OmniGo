@@ -18,7 +18,7 @@ import (
 )
 
 type mockConnectionRepo struct {
-	GetBySenderIdentityFunc     func(ctx context.Context, workspaceID uuid.UUID, senderIdentity string) (*repository.Connection, error)
+	GetBySenderIdentityFunc         func(ctx context.Context, workspaceID uuid.UUID, senderIdentity string) (*repository.Connection, error)
 	GetDefaultChannelConnectionFunc func(ctx context.Context, workspaceID uuid.UUID, channel string) (*repository.Connection, error)
 }
 
@@ -683,4 +683,3 @@ func TestCreateMessageChannelMismatch(t *testing.T) {
 		t.Errorf("expected code 'route_not_found', got %q", resp.Code)
 	}
 }
-

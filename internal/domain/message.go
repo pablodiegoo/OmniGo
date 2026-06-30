@@ -23,9 +23,9 @@ const (
 
 // ValidChannels defines the set of accepted channel values.
 var ValidChannels = map[string]bool{
-	"whatsapp":      true,
+	"whatsapp":       true,
 	"whatsapp_cloud": true,
-	"telegram":      true,
+	"telegram":       true,
 }
 
 // Media represents media payload (URL, type, filename, caption).
@@ -178,7 +178,7 @@ func ValidateMessage(req *CreateMessageRequest) *ErrorResponse {
 				Message: "must be one of: image, document, audio, video",
 			})
 		}
-		
+
 		// MediaURL validation: check empty and scheme
 		hasValidPrefix := false
 		lowerURL := strings.ToLower(req.Media.MediaURL)
@@ -220,4 +220,3 @@ func ValidateMessage(req *CreateMessageRequest) *ErrorResponse {
 
 	return nil
 }
-

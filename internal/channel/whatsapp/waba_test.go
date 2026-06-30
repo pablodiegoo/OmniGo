@@ -230,9 +230,9 @@ func TestWABADispatch(t *testing.T) {
 		payload := &channel.MessagePayload{
 			ConnectionID:   connID,
 			SenderIdentity: "+12345_phone_id",
-			To:           "+5511999999999",
-			TemplateName: "welcome_test_new",
-			Language:     "en_US",
+			To:             "+5511999999999",
+			TemplateName:   "welcome_test_new",
+			Language:       "en_US",
 			Components: []channel.TemplateComponent{
 				{
 					Type: "body",
@@ -407,7 +407,7 @@ func TestWABADispatch(t *testing.T) {
 		payload := &channel.MessagePayload{
 			ConnectionID:   connID,
 			SenderIdentity: "+12345_phone_id",
-			To: "+5511999999999",
+			To:             "+5511999999999",
 			Media: &domain.Media{
 				MediaURL:  "/media/workspace123/hash123.png",
 				MediaType: "image",
@@ -441,13 +441,13 @@ func TestWABA_MediaExternalURL(t *testing.T) {
 	connectionsRepo := repository.NewConnectionRepository(pool, enc)
 	wsID := uuid.New()
 	tenantCtx := tenant.WithWorkspaceID(context.Background(), wsID)
-	
+
 	// Create test workspace to satisfy FK constraint on connections
 	_, err = pool.Exec(context.Background(), "INSERT INTO workspaces (id, name, created_at, updated_at) VALUES ($1, $2, now(), now())", wsID, "test-workspace-"+wsID.String())
 	if err != nil {
 		t.Fatalf("failed to create test workspace for FK: %v", err)
 	}
-	
+
 	creds := WABAConfig{
 		PhoneNumberID: "12345",
 		Token:         "token_123",

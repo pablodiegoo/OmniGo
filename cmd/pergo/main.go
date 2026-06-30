@@ -241,7 +241,6 @@ func main() {
 	// --- Echo HTTP server ---
 	e := echosrv.New()
 
-
 	// Middleware stack: RequestID → Trace → Recover → Auth (on protected routes)
 	e.Use(middleware.TraceMiddleware())
 
@@ -415,7 +414,6 @@ func main() {
 	// Static files
 	e.Static("/static", "static")
 
-
 	// Test route: GET /api/v1/me (returns workspace_id from auth context)
 	e.GET("/api/v1/me", func(c *echo.Context) error {
 		wsID, ok := tenant.WorkspaceIDFrom(c.Request().Context())
@@ -500,4 +498,3 @@ func (c *natsConn) Ping() error {
 func (c *natsConn) IsConnected() bool {
 	return c.nc.IsConnected()
 }
-

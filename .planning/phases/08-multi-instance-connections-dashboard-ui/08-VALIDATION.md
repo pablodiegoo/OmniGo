@@ -1,9 +1,9 @@
 ---
 phase: 8
 slug: multi-instance-connections-dashboard-ui
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: approved
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-06-29
 ---
 
@@ -38,14 +38,14 @@ created: 2026-06-29
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 08-01-01 | 01 | 1 | D-01 | — | Migration integrity | db | `go test -v ./internal/repository/...` | ❌ W0 | ⬜ pending |
-| 08-01-02 | 01 | 1 | D-01 | — | Connection Repository CRUD | unit | `go test -v ./internal/repository/...` | ❌ W0 | ⬜ pending |
-| 08-02-01 | 02 | 1 | D-02 | — | Ingest payload routing | unit | `go test -v ./internal/api/...` | ❌ W0 | ⬜ pending |
-| 08-02-02 | 02 | 1 | D-02 | — | Dynamic adapter credential fetch | unit | `go test -v ./internal/channel/...` | ❌ W0 | ⬜ pending |
-| 08-02-03 | 02 | 1 | D-02 | — | whatsmeow SOCKS5 proxy dialer | unit | `go test -v ./internal/channel/whatsapp/...` | ❌ W0 | ⬜ pending |
-| 08-03-01 | 03 | 2 | D-04 | — | Tailwind/daisyUI compilation/styles | visual | `make build` | ❌ W0 | ⬜ pending |
-| 08-03-02 | 03 | 2 | D-05 | — | Dynamic onboarding checklist check | unit | `go test -v ./internal/api/...` | ❌ W0 | ⬜ pending |
-| 08-03-04 | 03 | 2 | D-03 | — | WhatsApp connection limit check | unit | `go test -v ./internal/api/...` | ❌ W0 | ⬜ pending |
+| 08-01-01 | 01 | 1 | D-01 | — | Migration integrity | db | `go test -v ./internal/repository/...` | ✅ yes | ✅ green |
+| 08-01-02 | 01 | 1 | D-01 | — | Connection Repository CRUD | unit | `go test -v ./internal/repository/...` | ✅ yes | ✅ green |
+| 08-02-01 | 02 | 1 | D-02 | — | Ingest payload routing | unit | `go test -v ./internal/api/...` | ✅ yes | ✅ green |
+| 08-02-02 | 02 | 1 | D-02 | — | Dynamic adapter credential fetch | unit | `go test -v ./internal/channel/...` | ✅ yes | ✅ green |
+| 08-02-03 | 02 | 1 | D-02 | — | whatsmeow SOCKS5 proxy dialer | unit | `go test -v ./internal/channel/whatsapp/...` | ✅ yes | ✅ green |
+| 08-03-01 | 03 | 2 | D-04 | — | Tailwind/daisyUI compilation/styles | visual | `make build` | ✅ yes | ✅ green |
+| 08-03-02 | 03 | 2 | D-05 | — | Dynamic onboarding checklist check | unit | `go test -v ./internal/api/...` | ✅ yes | ✅ green |
+| 08-03-04 | 03 | 2 | D-03 | — | WhatsApp connection limit check | unit | `go test -v ./internal/api/...` | ✅ yes | ✅ green |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -53,8 +53,8 @@ created: 2026-06-29
 
 ## Wave 0 Requirements
 
-- [ ] `internal/repository/connection_migration_test.go` — stubs for D-01 migration validation
-- [ ] `internal/channel/whatsapp/proxy_test.go` — SOCKS5 proxy dialer validation test stub
+- [x] `internal/repository/connection_migration_test.go` — stubs for D-01 migration validation
+- [x] `internal/channel/whatsapp/proxy_test.go` — SOCKS5 proxy dialer validation test stub
 
 ---
 
@@ -69,11 +69,12 @@ created: 2026-06-29
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 15s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 15s
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** approved
+

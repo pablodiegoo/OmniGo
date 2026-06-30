@@ -56,14 +56,14 @@ func TestExponentialBackoff(t *testing.T) {
 		wantDelay  time.Duration
 		maxBackoff time.Duration
 	}{
-		{0, 1 * time.Second, 60 * time.Second},     // 2^0 * 1s = 1s
-		{1, 2 * time.Second, 60 * time.Second},     // 2^1 * 1s = 2s
-		{2, 4 * time.Second, 60 * time.Second},     // 2^2 * 1s = 4s
-		{3, 8 * time.Second, 60 * time.Second},     // 2^3 * 1s = 8s
-		{4, 16 * time.Second, 60 * time.Second},    // 2^4 * 1s = 16s
-		{5, 32 * time.Second, 60 * time.Second},    // 2^5 * 1s = 32s
-		{6, 60 * time.Second, 60 * time.Second},    // 2^6 * 1s = 64s → capped at 60s
-		{10, 60 * time.Second, 60 * time.Second},   // 2^10 * 1s → capped at 60s
+		{0, 1 * time.Second, 60 * time.Second},   // 2^0 * 1s = 1s
+		{1, 2 * time.Second, 60 * time.Second},   // 2^1 * 1s = 2s
+		{2, 4 * time.Second, 60 * time.Second},   // 2^2 * 1s = 4s
+		{3, 8 * time.Second, 60 * time.Second},   // 2^3 * 1s = 8s
+		{4, 16 * time.Second, 60 * time.Second},  // 2^4 * 1s = 16s
+		{5, 32 * time.Second, 60 * time.Second},  // 2^5 * 1s = 32s
+		{6, 60 * time.Second, 60 * time.Second},  // 2^6 * 1s = 64s → capped at 60s
+		{10, 60 * time.Second, 60 * time.Second}, // 2^10 * 1s → capped at 60s
 	}
 
 	for _, tt := range tests {
@@ -82,17 +82,17 @@ func TestExponentialBackoff(t *testing.T) {
 
 func TestIsExpired(t *testing.T) {
 	tests := []struct {
-		name      string
-		payload   string
+		name       string
+		payload    string
 		wantExpire bool
 	}{
 		{
-			name:      "no TTL set",
-			payload:   `{"to":"+123","channel":"whatsapp","body":"hi"}`,
+			name:       "no TTL set",
+			payload:    `{"to":"+123","channel":"whatsapp","body":"hi"}`,
 			wantExpire: false,
 		},
 		{
-			name:      "TTL not expired",
+			name: "TTL not expired",
 			payload: func() string {
 				queuedAt := time.Now().UTC().Add(-10 * time.Second).Format(time.RFC3339Nano)
 				ttl := 300 // 5 minutes
@@ -101,7 +101,7 @@ func TestIsExpired(t *testing.T) {
 			wantExpire: false,
 		},
 		{
-			name:      "TTL expired",
+			name: "TTL expired",
 			payload: func() string {
 				queuedAt := time.Now().UTC().Add(-600 * time.Second).Format(time.RFC3339Nano)
 				ttl := 300 // 5 minutes
@@ -110,28 +110,28 @@ func TestIsExpired(t *testing.T) {
 			wantExpire: true,
 		},
 		{
-			name:      "zero TTL ignored",
-			payload:   `{"to":"+123","channel":"whatsapp","body":"hi","ttl_seconds":0}`,
+			name:       "zero TTL ignored",
+			payload:    `{"to":"+123","channel":"whatsapp","body":"hi","ttl_seconds":0}`,
 			wantExpire: false,
 		},
 		{
-			name:      "negative TTL ignored",
-			payload:   `{"to":"+123","channel":"whatsapp","body":"hi","ttl_seconds":-1}`,
+			name:       "negative TTL ignored",
+			payload:    `{"to":"+123","channel":"whatsapp","body":"hi","ttl_seconds":-1}`,
 			wantExpire: false,
 		},
 		{
-			name:      "invalid queued_at format",
-			payload:   `{"to":"+123","channel":"whatsapp","body":"hi","ttl_seconds":1,"queued_at":"invalid"}`,
+			name:       "invalid queued_at format",
+			payload:    `{"to":"+123","channel":"whatsapp","body":"hi","ttl_seconds":1,"queued_at":"invalid"}`,
 			wantExpire: false,
 		},
 		{
-			name:      "no queued_at field",
-			payload:   `{"to":"+123","channel":"whatsapp","body":"hi","ttl_seconds":1}`,
+			name:       "no queued_at field",
+			payload:    `{"to":"+123","channel":"whatsapp","body":"hi","ttl_seconds":1}`,
 			wantExpire: false,
 		},
 		{
-			name:      "invalid JSON",
-			payload:   `{not json}`,
+			name:       "invalid JSON",
+			payload:    `{not json}`,
 			wantExpire: false,
 		},
 	}
@@ -524,4 +524,3 @@ func TestWorker_QueueDepthDecrement(t *testing.T) {
 		t.Errorf("expected 2 decrements, got %d", tracker.decrements[wsID])
 	}
 }
-

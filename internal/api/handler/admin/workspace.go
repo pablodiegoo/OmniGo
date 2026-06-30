@@ -413,4 +413,3 @@ func (h *WorkspaceHandler) DeleteCredentials(c *echo.Context) error {
 		return mw.Render(c, http.StatusOK, pages.TelegramCredentialsCard(idStr, pages.TelegramConfig{}, "", h.ExternalURL))
 	}
 }
-

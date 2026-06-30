@@ -57,15 +57,15 @@ type InboundContact struct {
 
 // WABAWebhookHandler handles verification and inbound payloads for Meta's WhatsApp Cloud API (WABA).
 type WABAWebhookHandler struct {
-	pool          *repository.WorkspaceRepository
-	credsRepo     *repository.CredentialsRepository
-	sessRepo      *repository.RecipientSessionRepository
-	dedupRepo     *repository.InboundDedupRepository
-	s3Client      *storage.S3Client
-	publisher     *queue.JetStreamPublisher
-	auditWriter   audit.Writer
-	client        *http.Client
-	graphBaseURL  string
+	pool         *repository.WorkspaceRepository
+	credsRepo    *repository.CredentialsRepository
+	sessRepo     *repository.RecipientSessionRepository
+	dedupRepo    *repository.InboundDedupRepository
+	s3Client     *storage.S3Client
+	publisher    *queue.JetStreamPublisher
+	auditWriter  audit.Writer
+	client       *http.Client
+	graphBaseURL string
 }
 
 func NewWABAWebhookHandler(
