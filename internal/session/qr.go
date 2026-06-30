@@ -3,8 +3,11 @@ package session
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/google/uuid"
@@ -40,6 +43,9 @@ type QRPairingEvent struct {
 	Message string // human-readable description
 }
 
+// ErrMaxConnectionsExceeded is returned when the workspace exceeds its WhatsApp connection limit.
+var ErrMaxConnectionsExceeded = errors.New("maximum active WhatsApp connections limit exceeded")
+
 // StartPairing initiates WhatsApp Web device pairing for a workspace.
 // It creates a new whatsmeow client, starts the QR pairing flow, and
 // returns a channel that emits QR events until pairing succeeds or fails.
@@ -49,7 +55,36 @@ type QRPairingEvent struct {
 // and added to the session registry.
 //
 // Note: per whatsmeow API contract, GetQRChannel is called before Connect.
-func (m *Manager) StartPairing(ctx context.Context, workspaceID uuid.UUID, phone string) (<-chan QRPairingEvent, error) {
+func (m *Manager) StartPairing(ctx context.Context, workspaceID uuid.UUID, phone string, existingConnID *uuid.UUID) (<-chan QRPairingEvent, error) {
+	// Read max connections limit from environment (default: 5)
+	maxLimit := 5
+	if limitStr := os.Getenv("PERGO_MAX_WHATSAPP_CONNECTIONS"); limitStr != "" {
+		if val, err := strconv.Atoi(limitStr); err == nil && val >= 0 {
+			maxLimit = val
+		}
+	}
+
+	// Count active connections in workspace
+	devices, err := m.repo.ListByWorkspace(ctx, workspaceID)
+	if err == nil {
+		activeCount := 0
+		for _, dev := range devices {
+			if dev.JID != "" {
+				parsedJID, parseErr := parseJID(dev.JID)
+				if parseErr == nil && m.registry.Get(parsedJID) != nil {
+					// If we are re-pairing this specific connection slot, do not count it against the limit
+					if existingConnID != nil && dev.ID == *existingConnID {
+						continue
+					}
+					activeCount++
+				}
+			}
+		}
+		if activeCount >= maxLimit {
+			return nil, ErrMaxConnectionsExceeded
+		}
+	}
+
 	cfg := whatsapp.ClientConfig{
 		DB:        m.db,
 		WAVersion: m.waVersion,
@@ -112,7 +147,7 @@ func (m *Manager) StartPairing(ctx context.Context, workspaceID uuid.UUID, phone
 					}
 				case "success":
 					// Pairing succeeded — persist device and register session.
-					if err := m.onPairingSuccess(ctx, wc, workspaceID, phone); err != nil {
+					if err := m.onPairingSuccess(ctx, wc, workspaceID, phone, existingConnID); err != nil {
 						slog.Error("session manager: pairing success handler failed",
 							"error", err,
 							"workspace_id", workspaceID,
@@ -146,28 +181,46 @@ func (m *Manager) StartPairing(ctx context.Context, workspaceID uuid.UUID, phone
 }
 
 // onPairingSuccess persists the newly paired device and registers its session.
-func (m *Manager) onPairingSuccess(ctx context.Context, wc *whatsapp.WhatsAppClient, workspaceID uuid.UUID, phone string) error {
+func (m *Manager) onPairingSuccess(ctx context.Context, wc *whatsapp.WhatsAppClient, workspaceID uuid.UUID, phone string, existingConnID *uuid.UUID) error {
 	jid := wc.JID()
 	now := time.Now()
 
-	d := &Device{
-		ID:             uuid.New(),
-		WorkspaceID:    workspaceID,
-		Channel:        "whatsapp",
-		JID:            jid.String(),
-		Phone:          phone,
-		Status:         DeviceStatusConnected,
-		ConnectedSince: &now,
-	}
-
-	if err := m.repo.Create(ctx, d); err != nil {
-		return fmt.Errorf("persist device: %w", err)
+	var dID uuid.UUID
+	if existingConnID != nil {
+		dID = *existingConnID
+		// Perform direct UPDATE on connections table to reuse the slot
+		_, err := m.db.ExecContext(ctx, `
+			UPDATE connections SET
+				jid = $2,
+				sender_identity = $3,
+				status = $4,
+				connected_since = $5,
+				updated_at = NOW()
+			WHERE id = $1
+		`, dID, jid.String(), phone, string(DeviceStatusConnected), &now)
+		if err != nil {
+			return fmt.Errorf("update connection during re-pair: %w", err)
+		}
+	} else {
+		dID = uuid.New()
+		d := &Device{
+			ID:             dID,
+			WorkspaceID:    workspaceID,
+			Channel:        "whatsapp",
+			JID:            jid.String(),
+			Phone:          phone,
+			Status:         DeviceStatusConnected,
+			ConnectedSince: &now,
+		}
+		if err := m.repo.Create(ctx, d); err != nil {
+			return fmt.Errorf("persist device: %w", err)
+		}
 	}
 
 	// Register active session.
 	sessionCtx, cancel := context.WithCancel(context.Background())
 	sess := &Session{
-		DeviceID: d.ID.String(),
+		DeviceID: dID.String(),
 		JID:      jid,
 		Client:   wc,
 		Cancel:   cancel,
@@ -177,7 +230,7 @@ func (m *Manager) onPairingSuccess(ctx context.Context, wc *whatsapp.WhatsAppCli
 	// Keep the client running in background.
 	go func() {
 		_ = wc.Run(sessionCtx)
-		_ = m.repo.UpdateStatus(context.Background(), d.ID, DeviceStatusDisconnected)
+		_ = m.repo.UpdateStatus(context.Background(), dID, DeviceStatusDisconnected)
 		m.registry.Remove(jid)
 	}()
 

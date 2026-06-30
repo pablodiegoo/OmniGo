@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"errors"
 	"net/http"
 	"sync"
 	"time"
@@ -56,9 +57,22 @@ func (h *DeviceHandler) PairForm(c *echo.Context) error {
 }
 
 // StartPairing begins the QR pairing flow for a new device.
-// POST /admin/devices/pair — expects form field "phone"
+// POST /admin/devices/pair — expects form field "phone" or "connection_id"
 func (h *DeviceHandler) StartPairing(c *echo.Context) error {
 	phone := c.FormValue("phone")
+	var existingConnID *uuid.UUID
+	if connIDStr := c.FormValue("connection_id"); connIDStr != "" {
+		if u, err := uuid.Parse(connIDStr); err == nil {
+			existingConnID = &u
+			if phone == "" {
+				dev, err := h.Repo.GetByID(c.Request().Context(), u)
+				if err == nil && dev != nil {
+					phone = dev.Phone
+				}
+			}
+		}
+	}
+
 	if phone == "" {
 		return c.String(http.StatusBadRequest, "phone number is required")
 	}
@@ -74,12 +88,15 @@ func (h *DeviceHandler) StartPairing(c *echo.Context) error {
 	pairingSessionsMu.Unlock()
 
 	// Start pairing in background.
-	ch, err := h.Manager.StartPairing(c.Request().Context(), wsID, phone)
+	ch, err := h.Manager.StartPairing(c.Request().Context(), wsID, phone, existingConnID)
 	if err != nil {
 		ps.mu.Lock()
 		ps.status = "error"
 		ps.message = err.Error()
 		ps.mu.Unlock()
+		if errors.Is(err, session.ErrMaxConnectionsExceeded) {
+			return mw.Render(c, http.StatusUnprocessableEntity, pages.QRFragment("", phone, "error", err.Error()))
+		}
 		return mw.Render(c, http.StatusInternalServerError, pages.QRFragment("", phone, "error", err.Error()))
 	}
 
