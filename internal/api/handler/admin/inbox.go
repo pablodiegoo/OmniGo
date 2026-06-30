@@ -72,10 +72,10 @@ func (h *InboxHandler) View(c *echo.Context) error {
 		})
 	}
 
-	inboxPage := pages.InboxPage(displayName, inboxMessages)
+	inboxPage := pages.InboxPage(dbChannel, displayName, inboxMessages)
 
 	if mw.IsHTMX(c) {
-		return mw.Render(c, http.StatusOK, pages.InboxPageContent(displayName, inboxMessages))
+		return mw.Render(c, http.StatusOK, pages.InboxPageContent(dbChannel, displayName, inboxMessages))
 	}
 	return mw.Render(c, http.StatusOK, layout.Base("Inbox - "+displayName, inboxPage))
 }

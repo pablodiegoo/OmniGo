@@ -12,8 +12,17 @@ templ AuditPage(title string, entries []repository.AuditEntry, total int, filter
 
 // AuditPageContent renders the audit log page content.
 templ AuditPageContent(title string, entries []repository.AuditEntry, total int, filters repository.AuditFilters, workspaces []repository.Workspace, baseURL string) {
-	<div class="page-header">
-		<h1>{ title }</h1>
+	<div class="page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+		<h1 class="text-2xl font-bold tracking-tight text-zinc-900">{ title }</h1>
+		<div class="tabs tabs-boxed bg-zinc-100 p-1 rounded-lg inline-flex">
+			if baseURL == "/admin/audit/outbound" {
+				<a href="/admin/audit/outbound" class="tab tab-active bg-white text-zinc-900 shadow-sm rounded-md font-semibold px-4 py-1.5 text-sm">Outbound Logs</a>
+				<a href="/admin/audit/inbound" class="tab text-zinc-500 hover:text-zinc-900 px-4 py-1.5 text-sm">Inbound Logs</a>
+			} else {
+				<a href="/admin/audit/outbound" class="tab text-zinc-500 hover:text-zinc-900 px-4 py-1.5 text-sm">Outbound Logs</a>
+				<a href="/admin/audit/inbound" class="tab tab-active bg-white text-zinc-900 shadow-sm rounded-md font-semibold px-4 py-1.5 text-sm">Inbound Logs</a>
+			}
+		</div>
 	</div>
 	@AuditFiltersUI(filters, workspaces, baseURL)
 	@AuditTable(entries, total, filters, baseURL)

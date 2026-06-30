@@ -15,6 +15,7 @@ import (
 )
 
 // DeviceListPage renders the full device management page with layout.
+// DeviceListPage renders the full device management page with layout.
 func DeviceListPage(devices []*session.Device) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -36,7 +37,7 @@ func DeviceListPage(devices []*session.Device) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = layout.Base("Devices", DeviceListContent(devices)).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = layout.Base("Conexões", DeviceListContent(devices)).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -66,7 +67,7 @@ func DeviceListContent(devices []*session.Device) templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"page-header\"><h1>Devices</h1><button class=\"btn btn-primary\" hx-get=\"/admin/devices/pair-form\" hx-target=\"#pair-form-area\" hx-swap=\"innerHTML\">Link Device</button></div><div id=\"pair-form-area\"></div><div class=\"section\"><h2>Active Devices</h2><table class=\"table\" id=\"device-table\"><thead><tr><th>JID</th><th>Phone</th><th>Status</th><th>Workspace</th><th>Actions</th></tr></thead> <tbody id=\"device-list-body\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6\"><h1 class=\"text-2xl font-bold tracking-tight text-zinc-900\">Conexões</h1><button class=\"btn btn-black bg-black text-white hover:bg-zinc-800 border-none btn-sm\" hx-get=\"/admin/devices/pair-form\" hx-target=\"#pair-form-area\" hx-swap=\"innerHTML\">Link WhatsApp Web</button></div><div id=\"pair-form-area\" class=\"mb-6\"></div><div class=\"section bg-white border border-zinc-200 rounded-lg p-5 shadow-sm mb-6\"><h2 class=\"text-sm font-bold text-zinc-500 uppercase tracking-wider mb-4\">Dispositivos WhatsApp Web Ativos</h2><table class=\"table w-full text-zinc-700\" id=\"device-table\"><thead><tr class=\"bg-zinc-50 text-zinc-500 border-b border-zinc-200\"><th class=\"px-4 py-2 text-left text-xs font-semibold uppercase\">JID</th><th class=\"px-4 py-2 text-left text-xs font-semibold uppercase\">Phone</th><th class=\"px-4 py-2 text-left text-xs font-semibold uppercase\">Status</th><th class=\"px-4 py-2 text-left text-xs font-semibold uppercase\">Workspace</th><th class=\"px-4 py-2 text-left text-xs font-semibold uppercase\">Actions</th></tr></thead> <tbody id=\"device-list-body\" class=\"divide-y divide-zinc-200\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -77,12 +78,12 @@ func DeviceListContent(devices []*session.Device) templ.Component {
 			}
 		}
 		if len(devices) == 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<tr><td colspan=\"5\" class=\"empty-state\">No devices linked. Click \"Link Device\" to pair a WhatsApp account.</td></tr>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<tr><td colspan=\"5\" class=\"px-4 py-6 text-center text-zinc-400 italic\">Nenhum dispositivo emparelhado. Clique em \"Link WhatsApp Web\" para começar.</td></tr>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</tbody></table></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</tbody></table></div><div class=\"section bg-white border border-zinc-200 rounded-lg p-5 shadow-sm\"><h2 class=\"text-sm font-bold text-zinc-500 uppercase tracking-wider mb-4\">Caixas de Entrada por Canal (Inboxes)</h2><div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\"><div class=\"bg-zinc-50 border border-zinc-200 rounded-lg p-4 flex flex-col justify-between gap-4\"><div><h3 class=\"font-bold text-zinc-900 text-sm\">WhatsApp Web</h3><p class=\"text-xs text-zinc-400 mt-1\">Mensagens recebidas no WhatsApp Web emparelhado.</p></div><div><a href=\"/admin/inbox/whatsapp\" class=\"btn btn-xs btn-outline border-zinc-300 text-zinc-700 hover:bg-zinc-100 font-semibold w-full text-center\">Abrir Inbox</a></div></div><div class=\"bg-zinc-50 border border-zinc-200 rounded-lg p-4 flex flex-col justify-between gap-4\"><div><h3 class=\"font-bold text-zinc-900 text-sm\">WhatsApp Cloud</h3><p class=\"text-xs text-zinc-400 mt-1\">Mensagens recebidas via API Oficial (WABA).</p></div><div><a href=\"/admin/inbox/whatsapp_cloud\" class=\"btn btn-xs btn-outline border-zinc-300 text-zinc-700 hover:bg-zinc-100 font-semibold w-full text-center\">Abrir Inbox</a></div></div><div class=\"bg-zinc-50 border border-zinc-200 rounded-lg p-4 flex flex-col justify-between gap-4\"><div><h3 class=\"font-bold text-zinc-900 text-sm\">Telegram</h3><p class=\"text-xs text-zinc-400 mt-1\">Mensagens recebidas via bot do Telegram.</p></div><div><a href=\"/admin/inbox/telegram\" class=\"btn btn-xs btn-outline border-zinc-300 text-zinc-700 hover:bg-zinc-100 font-semibold w-full text-center\">Abrir Inbox</a></div></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -170,7 +171,7 @@ func QRFragment(code string, phone string, status string, message string) templ.
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(message)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/devices.templ`, Line: 90, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/devices.templ`, Line: 124, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -190,7 +191,7 @@ func QRFragment(code string, phone string, status string, message string) templ.
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.ResolveAttributeValue(code)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/devices.templ`, Line: 98, Col: 21}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/devices.templ`, Line: 132, Col: 21}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 				if templ_7745c5c3_Err != nil {
@@ -203,7 +204,7 @@ func QRFragment(code string, phone string, status string, message string) templ.
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(code)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/devices.templ`, Line: 101, Col: 43}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/devices.templ`, Line: 135, Col: 43}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -226,7 +227,7 @@ func QRFragment(code string, phone string, status string, message string) templ.
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.ResolveAttributeValue("/admin/devices/qr?phone=" + phone)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/devices.templ`, Line: 111, Col: 48}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/devices.templ`, Line: 145, Col: 48}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 			if templ_7745c5c3_Err != nil {

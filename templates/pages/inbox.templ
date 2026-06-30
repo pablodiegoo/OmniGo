@@ -11,13 +11,30 @@ type InboxMessage struct {
 	CreatedAt string
 }
 
-templ InboxPage(channelName string, entries []InboxMessage) {
-	@layout.Base("Inbox - "+channelName, InboxPageContent(channelName, entries))
+templ InboxPage(channel string, channelName string, entries []InboxMessage) {
+	@layout.Base("Inbox - "+channelName, InboxPageContent(channel, channelName, entries))
 }
 
-templ InboxPageContent(channelName string, entries []InboxMessage) {
-	<div class="page-header">
-		<h1>Inbox: { channelName }</h1>
+templ InboxPageContent(channel string, channelName string, entries []InboxMessage) {
+	<div class="page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+		<h1 class="text-2xl font-bold tracking-tight text-zinc-900">Inbox: { channelName }</h1>
+		<div class="tabs tabs-boxed bg-zinc-100 p-1 rounded-lg inline-flex">
+			if channel == "whatsapp" {
+				<a href="/admin/inbox/whatsapp" class="tab tab-active bg-white text-zinc-900 shadow-sm rounded-md font-semibold px-4 py-1.5 text-sm">WhatsApp Web</a>
+			} else {
+				<a href="/admin/inbox/whatsapp" class="tab text-zinc-500 hover:text-zinc-900 px-4 py-1.5 text-sm">WhatsApp Web</a>
+			}
+			if channel == "whatsapp_cloud" {
+				<a href="/admin/inbox/whatsapp_cloud" class="tab tab-active bg-white text-zinc-900 shadow-sm rounded-md font-semibold px-4 py-1.5 text-sm">WhatsApp Cloud</a>
+			} else {
+				<a href="/admin/inbox/whatsapp_cloud" class="tab text-zinc-500 hover:text-zinc-900 px-4 py-1.5 text-sm">WhatsApp Cloud</a>
+			}
+			if channel == "telegram" {
+				<a href="/admin/inbox/telegram" class="tab tab-active bg-white text-zinc-900 shadow-sm rounded-md font-semibold px-4 py-1.5 text-sm">Telegram</a>
+			} else {
+				<a href="/admin/inbox/telegram" class="tab text-zinc-500 hover:text-zinc-900 px-4 py-1.5 text-sm">Telegram</a>
+			}
+		</div>
 	</div>
 	<div class="section">
 		<table class="table">
