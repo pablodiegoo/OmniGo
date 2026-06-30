@@ -60,10 +60,25 @@ func TestConnectionMigration(t *testing.T) {
 		t.Fatalf("failed to set goose dialect: %v", err)
 	}
 
-	// 1. Ensure we migrate Down to version 0 first to start from a clean state
-	_ = goose.DownTo(db, dir, 0)
+	// Clean up existing migration test workspaces/devices/credentials to avoid conflicts
+	_, _ = db.ExecContext(ctx, "DELETE FROM audit_logs")
+	_, _ = db.ExecContext(ctx, "DELETE FROM waba_templates")
+	_, _ = db.ExecContext(ctx, "DELETE FROM recipient_sessions")
+	_, _ = db.ExecContext(ctx, "DELETE FROM message_dispatches")
+	_, _ = db.ExecContext(ctx, "DELETE FROM webhooks_dlq")
+	_, _ = db.ExecContext(ctx, "DELETE FROM webhooks")
+	_, _ = db.ExecContext(ctx, "DELETE FROM api_keys")
+	_, _ = db.ExecContext(ctx, "DELETE FROM connections")
+	_, _ = db.ExecContext(ctx, "DELETE FROM devices")
+	_, _ = db.ExecContext(ctx, "DELETE FROM channel_credentials")
+	_, _ = db.ExecContext(ctx, "DELETE FROM workspaces WHERE name LIKE 'migration-test-workspace-%'")
 
-	// 2. Migrate Up to version 11 (the version before connections table consolidation)
+	// 1. Ensure we migrate Down to version 11 first to start from baseline
+	if err := goose.DownTo(db, dir, 11); err != nil {
+		t.Fatalf("failed to migrate Down to 11: %v", err)
+	}
+
+	// 2. Migrate Up to version 11 (no-op if already at 11)
 	if err := goose.UpTo(db, dir, 11); err != nil {
 		t.Fatalf("failed to migrate Up to version 11: %v", err)
 	}
