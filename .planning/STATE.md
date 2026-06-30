@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: audit gaps
-current_phase: 0
-status: Awaiting next milestone
+current_phase: 8
+current_phase_name: multi-instance-connections-dashboard-ui
+status: executing
 stopped_at: Phase 8 plans created
-last_updated: "2026-06-30T03:11:05.452Z"
-last_activity: 2026-06-27
-last_activity_desc: Milestone v1.0 completed and archived
+last_updated: "2026-06-30T03:15:59.890Z"
+last_activity: 2026-06-30
+last_activity_desc: Phase 8 execution started
 progress:
   total_phases: 9
   completed_phases: 8
   total_plans: 26
   completed_plans: 23
   percent: 88
-current_phase_name: "Close gap: v1.0 audit gaps"
 ---
 
 # Project State
@@ -24,14 +24,14 @@ current_phase_name: "Close gap: v1.0 audit gaps"
 See: .planning/PROJECT.md (updated 2026-06-25)
 
 **Core value:** A single API request delivers a message through any configured channel with automatic fallback — without per-message markup, without vendor lock-in, and with full custody of transaction data on infrastructure you control.
-**Current focus:** Phase 04 — whatsapp-web-qr-pairing
+**Current focus:** Phase 8 — multi-instance-connections-dashboard-ui
 
 ## Current Position
 
-Phase: Milestone v1.0 complete
-Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-06-27 — Milestone v1.0 completed and archived
+Phase: 8 (multi-instance-connections-dashboard-ui) — EXECUTING
+Plan: 1 of 3
+Status: Executing Phase 8
+Last activity: 2026-06-30 — Phase 8 execution started
 
 ## Performance Metrics
 
